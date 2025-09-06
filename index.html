@@ -403,6 +403,43 @@
             min-width: 80px;
             text-align: right;
         }
+
+        /* Pagination styles */
+        .hadith-page {
+            display: none; /* Hidden by default */
+        }
+        .hadith-page.active {
+            display: block; /* Show active page */
+        }
+        .pagination-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+        .pagination-button {
+            background-color: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .pagination-button:hover:not(:disabled) {
+            background-color: var(--secondary);
+        }
+        .pagination-button:disabled {
+            background-color: #4a5568;
+            cursor: not-allowed;
+        }
+        .page-info {
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
@@ -472,7 +509,7 @@
     <!-- Navigation -->
     <nav class="bg-gray-800 bg-opacity-90 backdrop-blur-sm shadow-md sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
+            <div class="flex justify-between h-16 items-center">
                 <div class="flex items-center">
                     <!-- Logo and site name -->
                     <div class="flex-shrink-0 flex items-center">
@@ -481,15 +518,32 @@
                     </div>
                     
                     <!-- Navigation links -->
-                    <div class="hidden md:ml-6 md:flex md:space-x-8">
+                    <div class="hidden md:ml-6 md:flex md:space-x-8" id="desktop-menu">
                         <a href="index.html" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent hover:border-gray-300 text-sm font-medium text-gray-300 hover:text-white">Home</a>
                         <a href="index.html#Books" class="inline-flex items-center px-1 pt-1 border-b-2 border-teal-500 text-sm font-medium text-white">Hadiths</a>
                         <a href="index.html#about" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent hover:border-gray-300 text-sm font-medium text-gray-300 hover:text-white">About</a>
                     </div>
                 </div>
                 
-                <!-- Search and Action -->
-                <div class="flex items-center">
+                <!-- Mobile menu button -->
+                <div class="-mr-2 flex md:hidden">
+                    <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" aria-controls="mobile-menu" aria-expanded="false" id="mobile-menu-button">
+                        <span class="sr-only">Open main menu</span>
+                        <!-- Icon when menu is closed. -->
+                        <!-- Heroicon name: outline/menu -->
+                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                        <!-- Icon when menu is open. -->
+                        <!-- Heroicon name: outline/x -->
+                        <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Search and Action (Desktop) -->
+                <div class="hidden md:flex items-center">
                     <div class="flex-shrink-0">
                         <div class="relative flex items-center">
                             <input type="text" placeholder="Search hadiths..." class="pl-3 pr-10 py-2 rounded-lg border border-gray-600 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent bg-gray-700 text-white">
@@ -500,9 +554,7 @@
                             </button>
                         </div>
                     </div>
-                    <button class="ml-4 bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
-                        Sign In
-                    </button>
+                    <button class="ml-4 bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">Sign In</button>
                 </div>
             </div>
         </div>
@@ -510,101 +562,1116 @@
 
     <!-- Main Content -->
     <main class="py-16">
+        <!-- Mobile menu, show/hide based on menu state. -->
+        <div class="md:hidden hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="index.html" class="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium" aria-current="page">Home</a>
+                <a href="index.html#Books" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Hadiths</a>
+                <a href="index.html#about" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">About</a>
+            </div>
+            <div class="pt-4 pb-3 border-t border-gray-700">
+                <div class="flex items-center px-5">
+                    <div class="relative flex items-center w-full">
+                        <input type="text" placeholder="Search hadiths..." class="pl-3 pr-10 py-2 rounded-lg border border-gray-600 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent bg-gray-700 text-white w-full">
+                        <button class="absolute right-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="mt-3 px-5 space-y-1"><button class="block w-full text-left bg-teal-600 hover:bg-teal-700 text-white px-3 py-2 rounded-md text-base font-medium transition duration-300">Sign In</button></div>
+            </div>
+        </div>
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <h1 class="calligraphy-title text-4xl md:text-5xl font-bold text-white text-center mb-12">
                 Hadith Collection - Sahih al-Bukhari
             </h1>
 
-            <div class="space-y-10">
-                <!-- Hadith 1 to 30 -->
-                <!-- Loop for 30 hadiths -->
-                <div class="bg-gray-700 rounded-xl shadow-lg p-6">
-                    <h2 class="text-2xl font-bold text-white mb-4">Hadith 1 </h2>
-                    
-                    
-                    <div class="audio-player">
-                        <button class="play-btn" data-audio="audio1">
-                            <svg class="play-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                                <path d="M3 2v12l10-6z"/>
-                            </svg>
-                        </button>
-                        <div class="progress-container" id="progress1">
-                            <div class="progress-bar" id="progress-bar1"></div>
+            <div id="hadith-container">
+                <!-- Page 1 (Hadiths 1-10) -->
+                <div class="hadith-page active" id="page-1">
+                    <div class="space-y-10">
+                        <!-- Hadith 1: Knowledge (Original Hadith 3 content) -->
+                        <div class="bg-gray-700 rounded-xl shadow-lg p-6">
+                            <h2 class="text-2xl font-bold text-white mb-4">Hadith 1: </h2>
+                            <p class="text-gray-300 mb-4">حضرت عمر بن خطاب رضی اللہ عنہ  سے روایت ہے کے وہ فرما رہے تھے کہ میں نے جناب رسول اللہ صلی اللہ علیہ وسلم سے سنا آپ صلی اللہ علیہ وسلم فرما رہے تھے کہ تمام اعمال کا دارومدار نیت پر ہے اور ہر عمل کا نتیجہ ہر انسان کو اس کی نیت کے مطابق ہی ملے گا ۔ پس جس کی ہجرت ( ترک وطن ) دولت دنیا حاصل کرنے کے لیے ہو یا کسی عورت سے شادی کی غرض ہو ۔ پس اس کی ہجرت ان ہی چیزوں کے لیے ہو گی جن کے حاصل کرنے کی نیت سے اس نے ہجرت کی ہے ۔"</p>
+                            
+                            <div class="audio-player">
+                                <button class="play-btn" data-audio="audio1">
+                                    <svg class="play-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M3 2v12l10-6z"/>
+                                    </svg>
+                                </button>
+                                <div class="progress-container" id="progress1">
+                                    <div class="progress-bar" id="progress-bar1"></div>
+                                </div>
+                                <div class="time-display" id="time1">0:00 / 0:00</div>
+                            </div>
+                            <audio id="audio1" preload="metadata">
+                                <source src="1.mp3" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            
+                            <div class="flex justify-end mt-4">
+                                <a href="https://drive.google.com/file/d/1NBhJ9hsRsOnNoOfqCicpbcOvgQvcdPW6/view?usp=drive_link" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                                    Download PDF
+                                </a>
+                            </div>
                         </div>
-                        <div class="time-display" id="time1">0:00 / 0:00</div>
-                    </div>
-                    <audio id="audio1" preload="metadata">
-                        <source src="1.mp3" type="audio/mpeg">
-                        Your browser does not support the audio element.
-                    </audio>
-                    
-                    <div class="flex justify-end mt-4">
-                        <a href="https://drive.google.com/file/d/1NBhJ9hsRsOnNoOfqCicpbcOvgQvcdPW6/view?usp=drive_link" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
-                            Download 
-                        </a>
+
+                        <!-- Hadith 2: Belief (Original Hadith 2 content) -->
+                        <div class="bg-gray-700 rounded-xl shadow-lg p-6">
+                            <h2 class="text-2xl font-bold text-white mb-4">Hadith 2: </h2>
+                            <p class="text-gray-300 mb-4">حضرت عائشہ صدیقہ رضی اللہ عنہا سے روایت ہے کے  آپ نے فرمایا کہ ایک شخص حارث بن ہشام نامی نے آنحضرت صلی اللہ علیہ وسلم سے سوال کیا تھا کہ یا رسول اللہ ! آپ پر وحی کیسے نازل ہوتی ہے ؟ آپ صلی اللہ علیہ وسلم نے فرمایا کہ وحی نازل ہوتے وقت کبھی مجھ کو گھنٹی کی سی آواز محسوس ہوتی ہے اور وحی کی یہ کیفیت مجھ پر بہت شاق گذرتی ہے ۔ جب یہ کیفیت ختم ہوتی ہے تو میرے دل و دماغ پر اس ( فرشتے ) کے ذریعہ نازل شدہ وحی محفوظ ہو جاتی ہے اور کسی وقت ایسا ہوتا ہے کہ فرشتہ بشکل انسان میرے پاس آتا ہے اور مجھ سے کلام کرتا ہے ۔ پس میں اس کا کہا ہوا یاد رکھ لیتا ہوں ۔ حضرت عائشہ رضی اللہ عنہا کا بیان ہے کہ میں نے سخت کڑاکے کی سردی میں آنحضرت صلی اللہ علیہ وسلم کو دیکھا ہے کہ آپ صلی اللہ علیہ وسلم پر وحی نازل ہوئی اور جب اس کا سلسلہ موقوف ہوا تو آپ صلی اللہ علیہ وسلم کی پیشانی پسینے سے شرابور تھی ۔"</p>
+                            
+                            <div class="audio-player">
+                                <button class="play-btn" data-audio="audio2">
+                                    <svg class="play-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M3 2v12l10-6z"/>
+                                    </svg>
+                                </button>
+                                <div class="progress-container" id="progress2">
+                                    <div class="progress-bar" id="progress-bar2"></div>
+                                </div>
+                                <div class="time-display" id="time2">0:00 / 0:00</div>
+                            </div>
+                            <audio id="audio2" preload="metadata">
+                                <source src="2.mp3" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            
+                            <div class="flex justify-end mt-4">
+                                <a href="https://drive.google.com/file/d/1pPMTnuzejcl_vr5ozNKRnlR24id1ONH4/view?usp=drive_link" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                                    Download PDF
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Hadith 3: Actions are by Intentions -->
+                        <div class="bg-gray-700 rounded-xl shadow-lg p-6">
+                            <h2 class="text-2xl font-bold text-white mb-4">Hadith 3: </h2>
+                            <p class="text-gray-300 mb-4">حضرت عائشہ رضی اللہ عنہا سے روایت ہے  کہ انھوں نے بتلایا کہ آنحضرت صلی اللہ علیہ وسلم پر وحی کا ابتدائی دور اچھے سچے پاکیزہ خوابوں سے شروع ہوا ۔ آپ صلی اللہ علیہ وسلم خواب میں جو کچھ دیکھتے وہ صبح کی روشنی کی طرح صحیح اور سچا ثابت ہوتا ۔ پھر من جانب قدرت آپ صلی اللہ علیہ وسلم تنہائی پسند ہو گئے اور آپ صلی اللہ علیہ وسلم نے غار حرا میں خلوت نشینی اختیار فرمائی اور کئی کئی دن اور رات وہاں مسلسل عبادت اور یاد الٰہی و ذکر و فکر میں مشغول رہتے ۔ جب تک گھر آنے کو دل نہ چاہتا توشہ ہمراہ لیے ہوئے وہاں رہتے ۔ توشہ ختم ہونے پر ہی اہلیہ محترمہ حضرت خدیجہ رضی اللہ عنہا کے پاس تشریف لاتے اور کچھ توشہ ہمراہ لے کر پھر وہاں جا کر خلوت گزیں ہو جاتے ، یہی طریقہ جاری رہا یہاں تک کہ آپ صلی اللہ علیہ وسلم پر حق منکشف ہو گیا اور آپ صلی اللہ علیہ وسلم غار حرا ہی میں قیام پذیر تھے کہ اچانک حضرت جبرائیل علیہ السلام آپ صلی اللہ علیہ وسلم کے پاس حاضر ہوئے اور کہنے لگے کہ اے محمد ! پڑھو آپ صلی اللہ علیہ وسلم فرماتے ہیں کہ میں نے کہا کہ میں پڑھنا نہیں جانتا ، آپ صلی اللہ علیہ وسلم فرماتے ہیں کہ فرشتے نے مجھے پکڑ کر اتنے زور سے بھینچا کہ میری طاقت جواب دے گئی ، پھر مجھے چھوڑ کر کہا کہ پڑھو ، میں نے پھر وہی جواب دیا کہ میں پڑھا ہوا نہیں ہوں ۔ اس فرشتے نے مجھ کو نہایت ہی زور سے بھینچا کہ مجھ کو سخت تکلیف محسوس ہوئی ، پھر اس نے کہا کہ پڑھ ! میں نے کہا کہ میں پڑھا ہوا نہیں ہوں ۔ فرشتے نے تیسری بار مجھ کو پکڑا اور تیسری مرتبہ پھر مجھ کو بھینچا پھر مجھے چھوڑ دیا اور کہنے لگا کہ پڑھو اپنے رب کے نام کی مدد سے جس نے پیدا کیا اور انسان کو خون کی پھٹکی سے بنایا ، پڑھو اور آپ کا رب بہت ہی مہربانیاں کرنے والا ہے ۔ پس یہی آیتیں آپ صلی اللہ علیہ وسلم حضرت جبرائیل علیہ السلام سے سن کر اس حال میں غار حرا سے واپس ہوئے کہ آپ صلی اللہ علیہ وسلم کا دل اس انوکھے واقعہ سے کانپ رہا تھا ۔ آپ صلی اللہ علیہ وسلم حضرت خدیجہ کے ہاں تشریف لائے اور فرمایا کہ مجھے کمبل اڑھا دو ، مجھے کمبل اڑھا دو ۔ لوگوں نے آپ صلی اللہ علیہ وسلم کو کمبل اڑھا دیا ۔ جب آپ صلی اللہ علیہ وسلم کا ڈر جاتا رہا ۔ تو آپ صلی اللہ علیہ وسلم نے اپنی زوجہ محترمہ حضرت خدیجہ رضی اللہ عنہا کو تفصیل کے ساتھ یہ واقعہ سنایا اور فرمانے لگے کہ مجھ کو اب اپنی جان کا خوف ہو گیا ہے ۔ آپ صلی اللہ علیہ وسلم کی اہلیہ محترمہ حضرت خدیجہ رضی اللہ عنہا نے آپ صلی اللہ علیہ وسلم کی ڈھارس بندھائی اور کہا کہ آپ کا خیال صحیح نہیں ہے ۔ خدا کی قسم آپ کو اللہ کبھی رسوا نہیں کرے گا ، آپ تو اخلاق فاضلہ کے مالک ہیں ، آپ تو کنبہ پرور ہیں ، بے کسوں کا بوجھ اپنے سر پر رکھ لیتے ہیں ، مفلسوں کے لیے آپ کماتے ہیں ، مہمان نوازی میں آپ بےمثال ہیں اور مشکل وقت میں آپ امر حق کا ساتھ دیتے ہیں ۔ ایسے اوصاف حسنہ والا انسان یوں بے وقت ذلت و خواری کی موت نہیں پا سکتا ۔ پھر مزید تسلی کے لیے حضرت خدیجہ رضی اللہ عنہا آپ صلی اللہ علیہ وسلم کو ورقہ بن نوفل کے پاس لے گئیں ، جو ان کے چچا زاد بھائی تھے اور زمانہ جاہلیت میں نصرانی مذہب اختیار کر چکے تھے اور عبرانی زبان کے کاتب تھے ، چنانچہ انجیل کو بھی حسب منشائے خداوندی عبرانی زبان میں لکھا کرتے تھے ۔ ( انجیل سریانی زبان میں نازل ہوئی تھی پھر اس کا ترجمہ عبرانی زبان میں ہوا ۔ ورقہ اسی کو لکھتے تھے ) وہ بہت بوڑھے ہو گئے تھے یہاں تک کہ ان کی بینائی بھی رخصت ہو چکی تھی ۔ حضرت خدیجہ رضی اللہ عنہا نے ان کے سامنے آپ صلی اللہ علیہ وسلم کے حالات بیان کیے اور کہا کہ اے چچا زاد بھائی ! اپنے بھتیجے ( محمد صلی اللہ علیہ وسلم ) کی زبانی ذرا ان کی کیفیت سن لیجیئے وہ بولے کہ بھتیجے آپ نے جو کچھ دیکھا ہے ، اس کی تفصیل سناؤ ۔ چنانچہ آپ صلی اللہ علیہ وسلم نے از اول تا آخر پورا واقعہ سنایا ، جسے سن کر ورقہ بے اختیار ہو کر بول اٹھے کہ یہ تو وہی ناموس ( معزز راز دان فرشتہ ) ہے جسے اللہ نے حضرت موسیٰ علیہ السلام پر وحی دے کر بھیجا تھا ۔ کاش ، میں آپ کے اس عہد نبوت کے شروع ہونے پر جوان عمر ہوتا ۔ کاش میں اس وقت تک زندہ رہتا جب کہ آپ کی قوم آپ کو اس شہر سے نکال دے گی ۔ رسول کریم صلی اللہ علیہ وسلم نے یہ سن کر تعجب سے پوچھا کہ کیا وہ لوگ مجھ کو نکال دیں گے ؟ ( حالانکہ میں تو ان میں صادق و امین و مقبول ہوں ) ورقہ بولا ہاں یہ سب کچھ سچ ہے ۔ مگر جو شخص بھی آپ کی طرح امر حق لے کر آیا لوگ اس کے دشمن ہی ہو گئے ہیں ۔ اگر مجھے آپ کی نبوت کا وہ زمانہ مل جائے تو میں آپ کی پوری پوری مدد کروں گا ۔ مگر ورقہ کچھ دنوں کے بعد انتقال کر گئے ۔ پھر کچھ عرصہ تک وحی کی آمد موقوف رہی ۔"</p>                    
+                            <div class="audio-player">
+                                <button class="play-btn" data-audio="audio3">
+                                    <svg class="play-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M3 2v12l10-6z"/>
+                                    </svg>
+                                </button>
+                                <div class="progress-container" id="progress3">
+                                    <div class="progress-bar" id="progress-bar3"></div>
+                                </div>
+                                <div class="time-display" id="time3">0:00 / 0:00</div>
+                            </div>
+                            <audio id="audio3" preload="metadata">
+                                <source src="3.mp3" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            
+                            <div class="flex justify-end mt-4">
+                                <a href="https://drive.google.com/file/d/1sHrdJeY_f3FmfUUNQIJuBmPcsfttbguV/view?usp=drive_link" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                                    Download PDF
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Hadith 4: The Beginning of Revelation -->
+                        <div class="bg-gray-700 rounded-xl shadow-lg p-6">
+                            <h2 class="text-2xl font-bold text-white mb-4">Hadith 4: </h2>
+                            <p class="text-gray-300 mb-4">حضرت جابر بن عبداللہ انصاری رضی اللہ عنہما سے  روایت ہے کے  آپ صلی اللہ علیہ وسلم نے وحی کے رک جانے کے زمانے کے حالات بیان فرماتے ہوئے کہا کہ ایک روز میں چلا جا رہا تھا کہ اچانک میں نے آسمان کی طرف ایک آواز سنی اور میں نے اپنا سر آسمان کی طرف اٹھایا کیا دیکھتا ہوں کہ وہی فرشتہ جو میرے پاس غار حرا میں آیا تھا وہ آسمان و زمین کے بیچ میں ایک کرسی پر بیٹھا ہوا ہے ۔ میں اس سے ڈر گیا اور گھر آنے پر میں نے پھر کمبل اوڑھنے کی خواہش ظاہر کی ۔ اس وقت اللہ پاک کی طرف سے یہ آیات نازل ہوئیں ۔ اے لحاف اوڑھ کر لیٹنے والے ! اٹھ کھڑا ہو اور لوگوں کو عذاب الٰہی سے ڈرا اور اپنے رب کی بڑائی بیان کر اور اپنے کپڑوں کو پاک صاف رکھ اور گندگی سے دور رہ ۔ اس کے بعد وحی تیزی کے ساتھ پے در پے آنے لگی ۔"</p>                    
+                            <div class="audio-player">
+                                <button class="play-btn" data-audio="audio4">
+                                    <svg class="play-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M3 2v12l10-6z"/>
+                                    </svg>
+                                </button>
+                                <div class="progress-container" id="progress4">
+                                    <div class="progress-bar" id="progress-bar4"></div>
+                                </div>
+                                <div class="time-display" id="time4">0:00 / 0:00</div>
+                            </div>
+                            <audio id="audio4" preload="metadata">
+                                <source src="4.mp3" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            
+                            <div class="flex justify-end mt-4">
+                                <a href="https://drive.google.com/file/d/1M5SP-htc9OQYL99VwDW3kfDDiF2U7ggC/view?usp=drive_link" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                                    Download PDF
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Hadith 5: Placeholder -->
+                        <div class="bg-gray-700 rounded-xl shadow-lg p-6">
+                            <h2 class="text-2xl font-bold text-white mb-4">Hadith 5: </h2>
+<p class="text-gray-300 mb-4"> سعید بن جبیر سے روایت ہے کے  انھوں نے ابن عباس رضی اللہ عنہما سے کلام الٰہی «لَا تُحَرِّكْ بِهِ لِسَانَكَ لِتَعْجَلَ بِهِ
+» الخ کی تفسیر کے سلسلہ میں سنا کہ رسول اللہ صلی اللہ علیہ وسلم نزول قرآن کے وقت بہت سختی محسوس فرمایا کرتے تھے اور اس کی ( علامتوں ) میں سے ایک یہ تھی کہ یاد کرنے کے لیے آپ اپنے ہونٹوں کو ہلاتے تھے ۔ ابن عباس رضی اللہ عنہما نے کہا میں اپنے ہونٹ ہلاتا ہوں جس طرح آپ اپنے ہونٹ  ہلاتے تھے ۔ سعید کہتے ہیں میں بھی اپنے ہونٹ ہلاتا ہوں جس طرح ابن عباس رضی اللہ عنہما کو میں نے ہونٹ  ہلاتے دیکھا ۔ پھر انھوں نے اپنے ہونٹ ہلائے ۔ ( ابن عباس رضی اللہ عنہما نے کہا ) پھر یہ آیت اتری کہ اے محمد ! قرآن کو جلد جلد یاد کرنے کے لیے اپنی زبان نہ ہلاؤ ۔ اس کا جمع کر دینا اور پڑھا دینا ہمارا ذمہ ہے ۔ حضرت ابن عباس رضی اللہ عنہما کہتے ہیں یعنی قرآن آپ صلی اللہ علیہ وسلم کے دل میں جما دینا اور پڑھا دینا ہمارے ذمہ ہے ۔ پھر جب ہم پڑھ چکیں تو اس پڑھے ہوئے کی اتباع کرو ۔ ابن عباس رضی اللہ عنہما فرماتے ہیں ( اس کا مطلب یہ ہے ) کہ آپ اس کو خاموشی کے ساتھ سنتے رہو ۔ اس کے بعد مطلب سمجھا دینا ہمارے ذمہ ہے ۔ پھر یقیناً یہ ہماری ذمہ داری ہے کہ آپ اس کو پڑھو ( یعنی اس کو محفوظ کر سکو ) چنانچہ اس کے بعد جب آپ کے پاس حضرت جبرائیل علیہ السلام ( وحی لے کر ) آتے تو آپ ( توجہ سے ) سنتے ۔ جب وہ چلے جاتے تو رسول اللہ صلی اللہ علیہ وسلم اس ( وحی ) کو اسی طرح پڑھتے جس طرح حضرت جبرائیل علیہ السلام نے اسے پڑھا تھا ۔"</p>                    
+                            <div class="audio-player">
+                                <button class="play-btn" data-audio="audio5">
+                                    <svg class="play-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M3 2v12l10-6z"/>
+                                    </svg>
+                                </button>
+                                <div class="progress-container" id="progress5">
+                                    <div class="progress-bar" id="progress-bar5"></div>
+                                </div>
+                                <div class="time-display" id="time5">0:00 / 0:00</div>
+                            </div>
+                            <audio id="audio5" preload="metadata">
+                                <source src="5.mp3" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            
+                            <div class="flex justify-end mt-4">
+                                <a href="https://drive.google.com/file/d/18S40uWY76TMdcDIqGXkBPRFHDT2cg0mp/view?usp=drive_link" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                                    Download PDF
+                                </a>
+                            </div>
+                        </div>
+                      
+                        <!-- Hadith 6: -->
+                        <div class="bg-gray-700 rounded-xl shadow-lg p-6">
+                            <h2 class="text-2xl font-bold text-white mb-4">Hadith 6: </h2>
+                            <p class="text-gray-300 mb-4">حضرت ابن عباس رضی اللہ عنہما سے  روایت ہے کے  رسول اللہ صلی اللہ علیہ وسلم سب لوگوں سے زیادہ جواد ( سخی ) تھے اور رمضان میں ( دوسرے اوقات کے مقابلہ میں جب ) جبرائیل علیہ السلام آپ صلی اللہ علیہ وسلم سے ملتے بہت ہی زیادہ جود و کرم فرماتے ۔ جبرائیل علیہ السلام رمضان کی ہر رات میں آپ صلی اللہ علیہ وسلم سے ملاقات کرتے اور آپ صلی اللہ علیہ وسلم کے ساتھ قرآن کا دورہ کرتے ، غرض آنحضرت صلی اللہ علیہ وسلم لوگوں کو بھلائی پہنچانے میں بارش لانے والی ہوا سے بھی زیادہ جود و کرم فرمایا کرتے تھے ۔ "</p>                    
+                            <div class="audio-player">
+                                <button class="play-btn" data-audio="audio6">
+                                    <svg class="play-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M3 2v12l10-6z"/>
+                                    </svg>
+                                </button>
+                                <div class="progress-container" id="progress6">
+                                    <div class="progress-bar" id="progress-bar6"></div>
+                                </div>
+                                <div class="time-display" id="time6">0:00 / 0:00</div>
+                            </div>
+                            <audio id="audio6" preload="metadata">
+                                <source src="6.mp3" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            
+                            <div class="flex justify-end mt-4">
+                                <a href="https://drive.google.com/file/d/19uOBlqR8rPjVTPwoyHx0A8kLnxgJKBbf/view?usp=drive_link" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                                    Download PDF
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Hadith 7: Placeholder -->
+                        <div class="bg-gray-700 rounded-xl shadow-lg p-6">
+                            <h2 class="text-2xl font-bold text-white mb-4">Hadith 7: </h2>
+<p class="text-gray-300 mb-4"> حضرت عبداللہ بن عباس  سے روایت ہے کے  ابوسفیان بن حرب نے یہ واقعہ بیان کیا کہ ہرقل ( شاہ روم ) نے ان کے پاس قریش کے قافلے میں ایک آدمی بلانے کو بھیجا اور اس وقت یہ لوگ تجارت کے لیے ملک شام گئے ہوئے تھے اور یہ وہ زمانہ تھا جب رسول اللہ صلی اللہ علیہ وسلم نے قریش اور ابوسفیان سے ایک وقتی عہد کیا ہوا تھا ۔ جب ابوسفیان اور دوسرے لوگ ہرقل کے پاس ایلیاء پہنچے جہاں ہرقل نے دربار طلب کیا تھا ۔ اس کے گرد روم کے بڑے بڑے لوگ ( علماء وزراء امراء ) بیٹھے ہوئے تھے ۔ ہرقل نے ان کو اور اپنے ترجمان کو بلوایا ۔ پھر ان سے پوچھا کہ تم میں سے کون شخص مدعی رسالت کا زیادہ قریبی عزیز ہے ؟ ابوسفیان کہتے ہیں کہ میں بول اٹھا کہ میں اس کا سب سے زیادہ قریبی رشتہ دار ہوں ۔ ( یہ سن کر ) ہرقل نے حکم دیا کہ اس کو ( ابوسفیان کو ) میرے قریب لا کر بٹھاؤ اور اس کے ساتھیوں کو اس کی پیٹھ کے پیچھے بٹھا دو ۔ پھر اپنے ترجمان سے کہا کہ ان لوگوں سے کہہ دو کہ میں ابوسفیان سے اس شخص کے ( یعنی محمد صلی اللہ علیہ وسلم کے ) حالات پوچھتا ہوں ۔ اگر یہ مجھ سے کسی بات میں جھوٹ بول دے تو تم اس کا جھوٹ ظاہر کر دینا ، ( ابوسفیان کا قول ہے کہ ) خدا کی قسم ! اگر مجھے یہ غیرت نہ آتی کہ یہ لوگ مجھ کو جھٹلائیں گے تو میں آپ صلی اللہ علیہ وسلم کی نسبت ضرور غلط گوئی سے کام لیتا ۔ خیر پہلی بات جو ہرقل نے مجھ سے پوچھی وہ یہ کہ اس شخص کا خاندان تم لوگوں میں کیسا ہے ؟ میں نے کہا وہ تو بڑے اونچے عالی نسب والے ہیں ۔ کہنے لگا اس سے پہلے بھی کسی نے تم لوگوں میں ایسی بات کہی تھی ؟ میں نے کہا نہیں کہنے لگا ، اچھا اس کے بڑوں میں کوئی بادشاہ ہوا ہے ؟ میں نے کہا نہیں ۔ پھر اس نے کہا ، بڑے لوگوں نے اس کی پیروی اختیار کی ہے یا کمزوروں نے ؟ میں نے کہا نہیں کمزوروں نے ۔ پھر کہنے لگا ، اس کے تابعدار روز بڑھتے جاتے ہیں یا کوئی ساتھی پھر بھی جاتا ہے ؟ میں نے کہا نہیں ۔ کہنے لگا کہ کیا اپنے اس دعوائے ( نبوت ) سے پہلے کبھی ( کسی بھی موقع پر ) اس نے جھوٹ بولا ہے ؟ میں نے کہا نہیں ۔ اور اب ہماری اس سے ( صلح کی ) ایک مقررہ مدت ٹھہری ہوئی ہے ۔ معلوم نہیں وہ اس میں کیا کرنے والا ہے ۔ ( ابوسفیان کہتے ہیں ) میں اس بات کے سوا اور کوئی ( جھوٹ ) اس گفتگو میں شامل نہ کر سکا ۔ ہرقل نے کہا کیا تمہاری اس سے کبھی لڑائی بھی ہوتی ہے ؟ ہم نے کہا کہ ہاں ۔ بولا پھر تمہاری اور اس کی جنگ کا کیا حال ہوتا ہے ؟ میں نے کہا ، لڑائی ڈول کی طرح ہے ، کبھی وہ ہم سے ( میدان جنگ ) جیت لیتے ہیں اور کبھی ہم ان سے جیت لیتے ہیں ۔ ہرقل نے پوچھا ۔ وہ تمہیں کس بات کا حکم دیتا ہے ؟ میں نے کہا وہ کہتا ہے کہ صرف ایک اللہ ہی کی عبادت کرو ، اس کا کسی کو شریک نہ بناؤ اور اپنے باپ دادا کی ( شرک کی ) باتیں چھوڑ دو اور ہمیں نماز پڑھنے ، سچ بولنے ، پرہیزگاری اور صلہ رحمی کا حکم دیتا ہے ۔ ( یہ سب سن کر ) پھر ہرقل نے اپنے ترجمان سے کہا کہ ابوسفیان سے کہہ دے کہ میں نے تم سے اس کا نسب پوچھا تو تم نے کہا کہ وہ ہم میں عالی نسب ہے اور پیغمبر اپنی قوم میں عالی نسب ہی بھیجے جایا کرتے ہیں ۔ میں نے تم سے پوچھا کہ ( دعویٰ نبوت کی ) یہ بات تمہارے اندر اس سے پہلے کسی اور نے بھی کہی تھی ، تو تم نے جواب دیا کہ نہیں ، تب میں نے ( اپنے دل میں ) کہا کہ اگر یہ بات اس سے پہلے کسی نے کہی ہوتی تو میں سمجھتا کہ اس شخص نے بھی اسی بات کی تقلید کی ہے جو پہلے کہی جا چکی ہے ۔ میں نے تم سے پوچھا کہ اس کے بڑوں میں کوئی بادشاہ بھی گزرا ہے ، تم نے کہا کہ نہیں ۔ تو میں نے ( دل میں ) کہا کہ ان کے بزرگوں میں سے کوئی بادشاہ ہوا ہو گا تو کہہ دوں گا کہ وہ شخص ( اس بہانہ ) اپنے آباء و اجداد کی بادشاہت اور ان کا ملک ( دوبارہ ) حاصل کرنا چاہتا ہے ۔ اور میں نے تم سے پوچھا کہ اس بات کے کہنے ( یعنی پیغمبری کا دعویٰ کرنے ) سے پہلے تم نے کبھی اس کو دروغ گوئی کا الزام لگایا ہے ؟ تم نے کہا کہ نہیں ۔ تو میں نے سمجھ لیا کہ جو شخص آدمیوں کے ساتھ دروغ گوئی سے بچے وہ اللہ کے بارے میں کیسے جھوٹی بات کہہ سکتا ہے ۔ اور میں نے تم سے پوچھا کہ بڑے لوگ اس کے پیرو ہوتے ہیں یا کمزور آدمی ۔ تم نے کہا کمزوروں نے اس کی اتباع کی ہے ، تو ( دراصل ) یہی لوگ پیغمبروں کے متبعین ہوتے ہیں ۔ اور میں نے تم سے پوچھا کہ اس کے ساتھی بڑھ رہے ہیں یا کم ہو رہے ہیں ۔ تم نے کہا کہ وہ بڑھ رہے ہیں اور ایمان کی کیفیت یہی ہوتی ہے ۔ حتیٰ کہ وہ کامل ہو جاتا ہے اور میں نے تم سے پوچھا کہ آیا کوئی شخص اس کے دین سے ناخوش ہو کر مرتد بھی ہو جاتا ہے تم نے کہا نہیں ، تو ایمان کی خاصیت بھی یہی ہے جن کے دلوں میں اس کی مسرت رچ بس جائے وہ اس سے لوٹا نہیں کرتے ۔ اور میں نے تم سے پوچھا کہ آیا وہ کبھی عہد شکنی کرتے ہیں ۔ تم نے کہا نہیں ، پیغمبروں کا یہی حال ہوتا ہے ، وہ عہد کی خلاف ورزی نہیں کرتے ۔ اور میں نے تم سے کہا کہ وہ تم سے کس چیز کے لیے کہتے ہیں ۔ تم نے کہا کہ وہ ہمیں حکم دیتے ہیں کہ اللہ کی عبادت کرو ، اس کے ساتھ کسی کو شریک نہ ٹھہراؤ اور تمہیں بتوں کی پرستش سے روکتے ہیں ۔ سچ بولنے اور پرہیزگاری کا حکم دیتے ہیں ۔ لہٰذا اگر یہ باتیں جو تم کہہ رہے ہو سچ ہیں تو عنقریب وہ اس جگہ کا مالک ہو جائے گا کہ جہاں میرے یہ دونوں پاؤں ہیں ۔ مجھے معلوم تھا کہ وہ ( پیغمبر ) آنے والا ہے ۔ مگر مجھے یہ معلوم نہیں تھا کہ وہ تمہارے اندر ہو گا ۔ اگر میں جانتا کہ اس تک پہنچ سکوں گا تو اس سے ملنے کے لیے ہر تکلیف گوارا کرتا ۔ اگر میں اس کے پاس ہوتا تو اس کے پاؤں دھوتا ۔ ہرقل نے رسول اللہ صلی اللہ علیہ وسلم وہ خط منگایا جو آپ نے دحیہ کلبی رضی اللہ عنہ کے ذریعہ حاکم بصریٰ کے پاس بھیجا تھا اور اس نے وہ ہرقل کے پاس بھیج دیا تھا ۔ پھر اس کو پڑھا تو اس میں ( لکھا تھا ) : ¤¤ اللہ کے نام کے ساتھ جو نہایت مہربان اور رحم والا ہے ۔ ¤ اللہ کے بندے اور اس کے پیغمبر محمد صلی اللہ علیہ وسلم کی طرف سے یہ خط ہے شاہ روم کے لیے ۔ اس شخص پر سلام ہو جو ہدایت کی پیروی کرے اس کے بعد میں آپ کے سامنے دعوت اسلام پیش کرتا ہوں ۔ اگر آپ اسلام لے آئیں گے تو ( دین و دنیا میں ) سلامتی نصیب ہو گی ۔ اللہ آپ کو دوہرا ثواب دے گا اور اگر آپ ( میری دعوت سے ) روگردانی کریں گے تو آپ کی رعایا کا گناہ بھی آپ ہی پر ہو گا ۔ اور اے اہل کتاب ! ایک ایسی بات پر آ جاؤ جو ہمارے اور تمہارے درمیان یکساں ہے ۔ وہ یہ کہ ہم اللہ کے سوا کسی کی عبادت نہ کریں اور کسی کو اس کا شریک نہ ٹھہرائیں اور نہ ہم میں سے کوئی کسی کو خدا کے سوا اپنا رب بنائے ۔ پھر اگر وہ اہل کتاب ( اس بات سے ) منہ پھیر لیں تو ( مسلمانو ! ) تم ان سے کہہ دو کہ ( تم مانو یا نہ مانو ) ہم تو ایک خدا کے اطاعت گزار ہیں ۔ ابوسفیان کہتے ہیں : جب ہرقل نے جو کچھ کہنا تھا کہہ دیا اور خط پڑھ کر فارغ ہوا تو اس کے اردگرد بہت شور و غوغہ ہوا ، بہت سی آوازیں اٹھیں اور ہمیں باہر نکال دیا گیا ۔ تب میں نے اپنے ساتھیوں سے کہا کہ ابوکبشہ کے بیٹے ( آنحضرت صلی اللہ علیہ وسلم ) کا معاملہ تو بہت بڑھ گیا ( دیکھو تو ) اس سے بنی اصفر ( روم ) کا بادشاہ بھی ڈرتا ہے ۔ مجھے اس وقت سے اس بات کا یقین ہو گیا کہ حضور صلی اللہ علیہ وسلم عنقریب غالب ہو کر رہیں گے ۔ حتیٰ کہ اللہ نے مجھے مسلمان کر دیا ۔ ( راوی کا بیان ہے کہ ) ابن ناطور ایلیاء کا حاکم ہرقل کا مصاحب اور شام کے نصاریٰ کا لاٹ پادری بیان کرتا تھا کہ ہرقل جب ایلیاء آیا ، ایک دن صبح کو پریشان اٹھا تو اس کے درباریوں نے دریافت کیا کہ آج ہم آپ کی حالت بدلی ہوئی پاتے ہیں ۔ ( کیا وجہ ہے ؟ ) ابن ناطور کا بیان ہے کہ ہرقل نجومی تھا ، علم نجوم میں وہ پوری مہارت رکھتا تھا ۔ اس نے اپنے ہم نشینوں کو بتایا کہ میں نے آج رات ستاروں پر نظر ڈالی تو دیکھا کہ ختنہ کرنے والوں کا بادشاہ ہمارے ملک پر غالب آ گیا ہے ۔ ( بھلا ) اس زمانے میں کون لوگ ختنہ کرتے ہیں ؟ انھوں نے کہا کہ یہود کے سوا کوئی ختنہ نہیں کرتا ۔ سو ان کی وجہ سے پریشان نہ ہوں ۔ سلطنت کے تمام شہروں میں یہ حکم لکھ بھیجئے کہ وہاں جتنے یہودی ہوں سب قتل کر دئیے جائیں ۔ وہ لوگ انہی باتوں میں مشغول تھے کہ ہرقل کے پاس ایک آدمی لایا گیا ۔ جسے شاہ غسان نے بھیجا تھا ۔ اس نے رسول اللہ صلی اللہ علیہ وسلم کے حالات بیان کئے ۔ جب ہرقل نے ( سارے حالات ) سن لیے تو کہا کہ جا کر دیکھو وہ ختنہ کئے ہوئے ہے یا نہیں ؟ انھوں نے اسے دیکھا تو بتلایا کہ وہ ختنہ کیا ہوا ہے ۔ ہرقل نے جب اس شخص سے عرب کے بارے میں پوچھا تو اس نے بتلایا کہ وہ ختنہ کرتے ہیں ۔ تب ہرقل نے کہا کہ یہ ہی ( محمد صلی اللہ علیہ وسلم ) اس امت کے بادشاہ ہیں جو پیدا ہو چکے ہیں ۔ پھر اس نے اپنے ایک دوست کو رومیہ خط لکھا اور وہ بھی علم نجوم میں ہرقل کی طرح ماہر تھا ۔ پھر وہاں سے ہرقل حمص چلا گیا ۔ ابھی حمص سے نکلا نہیں تھا کہ اس کے دوست کا خط ( اس کے جواب میں ) آ گیا ۔ اس کی رائے بھی حضور صلی اللہ علیہ وسلم کے ظہور کے بارے میں ہرقل کے موافق تھی کہ محمد صلی اللہ علیہ وسلم ( واقعی ) پیغمبر ہیں ۔ اس کے بعد ہرقل نے روم کے بڑے آدمیوں کو اپنے حمص کے محل میں طلب کیا اور اس کے حکم سے محل کے دروازے بند کر لیے گئے ۔ پھر وہ ( اپنے خاص محل سے ) باہر آیا اور کہا ” اے روم والو ! کیا ہدایت اور کامیابی میں کچھ حصہ تمہارے لیے بھی ہے ؟ اگر تم اپنی سلطنت کی بقا چاہتے ہو تو پھر اس نبی کی بیعت کر لو اور مسلمان ہو جاؤ “ ( یہ سننا تھا کہ ) پھر وہ لوگ وحشی گدھوں کی طرح دروازوں کی طرف دوڑے ( مگر ) انہیں بند پایا ۔ آخر جب ہرقل نے ( اس بات سے ) ان کی یہ نفرت دیکھی اور ان کے ایمان لانے سے مایوس ہو گیا تو کہنے لگا کہ ان لوگوں کو میرے پاس لاؤ ۔ ( جب وہ دوبارہ آئے ) تو اس نے کہا میں نے جو بات کہی تھی اس سے تمہاری دینی پختگی کی آزمائش مقصود تھی سو وہ میں نے دیکھ لی ۔ تب ( یہ بات سن کر ) وہ سب کے سب اس کے سامنے سجدے میں گر پڑے اور اس سے خوش ہو گئے ۔ بالآخر ہرقل کی آخری حالت یہ ہی رہی ۔"</p>                    
+                            <div class="audio-player">
+                                <button class="play-btn" data-audio="audio7">
+                                    <svg class="play-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M3 2v12l10-6z"/>
+                                    </svg>
+                                </button>
+                                <div class="progress-container" id="progress7">
+                                    <div class="progress-bar" id="progress-bar7"></div>
+                                </div>
+                                <div class="time-display" id="time7">0:00 / 0:00</div>
+                            </div>
+                            <audio id="audio7" preload="metadata">
+                                <source src="7.mp3" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            
+                            <div class="flex justify-end mt-4">
+                                <a href="https://drive.google.com/file/d/1pDR6nKsOskbUeyWTGk6UPygYAgL585VJ/view?usp=drive_link" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                                    Download PDF
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Hadith 8: Placeholder -->
+                        <div class="bg-gray-700 rounded-xl shadow-lg p-6">
+                            <h2 class="text-2xl font-bold text-white mb-4">Hadith 8: </h2>
+<p class="text-gray-300 mb-4">حضرت عبداللہ بن عمر رضی اللہ عنہما سے روایت کی کے  رسول اللہ صلی اللہ علیہ وسلم نے فرمایا اسلام کی بنیاد پانچ چیزوں پر قائم کی گئی ہے۔ اول گواہی دینا کہ اللہ کے سوا کوئی معبود نہیں اور بیشک حضرت محمد صلی اللہ علیہ وسلم اللہ کے سچے رسول ہیں اور نماز قائم کرنا اور زکوٰۃ ادا کرنا اور حج کرنا اور رمضان کے روزے رکھنا ۔ "</p>                    
+                            <div class="audio-player">
+                                <button class="play-btn" data-audio="audio8">
+                                    <svg class="play-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M3 2v12l10-6z"/>
+                                    </svg>
+                                </button>
+                                <div class="progress-container" id="progress8">
+                                    <div class="progress-bar" id="progress-bar8"></div>
+                                </div>
+                                <div class="time-display" id="time8">0:00 / 0:00</div>
+                            </div>
+                            <audio id="audio8" preload="metadata">
+                                <source src="8.mp3" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            
+                            <div class="flex justify-end mt-4">
+                                <a href="https://drive.google.com/file/d/1u5hqp-E1Z6lM_OuybWD17UbRHeUX2LHs/view?usp=drive_link" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                                    Download PDF
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Hadith 9: Placeholder -->
+                        <div class="bg-gray-700 rounded-xl shadow-lg p-6">
+                            <h2 class="text-2xl font-bold text-white mb-4">Hadith 9: </h2>
+<p class="text-gray-300 mb-4">حضرت ابوہریرہ رضی اللہ عنہ سے روایت ہے کے  انہوں نے  جناب نبی کریم صلی اللہ علیہ وسلم سے آپ صلی اللہ علیہ وسلم نے فرمایا کہ ایمان کی ساٹھ سے کچھ اوپر شاخیں ہیں ۔ اور حیاء ( شرم ) بھی ایمان کی ایک شاخ ہے ۔ "</p>                    
+                            <div class="audio-player">
+                                <button class="play-btn" data-audio="audio9">
+                                    <svg class="play-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M3 2v12l10-6z"/>
+                                    </svg>
+                                </button>
+                                <div class="progress-container" id="progress9">
+                                    <div class="progress-bar" id="progress-bar9"></div>
+                                </div>
+                                <div class="time-display" id="time9">0:00 / 0:00</div>
+                            </div>
+                            <audio id="audio9" preload="metadata">
+                                <source src="9.mp3" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            
+                            <div class="flex justify-end mt-4">
+                                <a href="https://drive.google.com/file/d/1vPWXkeUCxZmm5R6nEPdzPt2y2YXqn0m5/view?usp=drive_link" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                                    Download PDF
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Hadith 10: Placeholder -->
+                        <div class="bg-gray-700 rounded-xl shadow-lg p-6">
+                            <h2 class="text-2xl font-bold text-white mb-4">Hadith 10: </h2>
+<p class="text-gray-300 mb-4">حضرت عبداللہ بن عمر رضی اللہ عنہما سے سے روایت ہے کے  آپ صلی اللہ علیہ وسلم نے فرمایا مسلمان وہ ہے جس کی زبان اور ہاتھ سے مسلمان بچے رہیں اور مہاجر وہ ہے جو ان کاموں کو چھوڑ دے جن سے اللہ نے منع فرمایا ۔ "</p>                    
+                            <div class="audio-player">
+                                <button class="play-btn" data-audio="audio10">
+                                    <svg class="play-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M3 2v12l10-6z"/>
+                                    </svg>
+                                </button>
+                                <div class="progress-container" id="progress10">
+                                    <div class="progress-bar" id="progress-bar10"></div>
+                                </div>
+                                <div class="time-display" id="time10">0:00 / 0:00</div>
+                            </div>
+                            <audio id="audio10" preload="metadata">
+                                <source src="10.mp3" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            
+                            <div class="flex justify-end mt-4">
+                                <a href="https://drive.google.com/file/d/1-JNOGX6cAiZk41gZ8NX7uE6JuzhQ7hqC/view?usp=drive_link" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                                    Download PDF
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="bg-gray-700 rounded-xl shadow-lg p-6">
-                    <h2 class="text-2xl font-bold text-white mb-4">Hadith 2: Belief</h2>
-                    <p class="text-gray-300 mb-4">Narrated Abu Huraira: The Prophet (ﷺ) said, "The signs of a hypocrite are three: Whenever he speaks, he tells a lie..."</p>
-                    
-                    <div class="audio-player">
-                        <button class="play-btn" data-audio="audio2">
-                            <svg class="play-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                                <path d="M3 2v12l10-6z"/>
-                            </svg>
-                        </button>
-                        <div class="progress-container" id="progress2">
-                            <div class="progress-bar" id="progress-bar2"></div>
+                <!-- Page 2 (Hadiths 11-20) -->
+                <div class="hadith-page" id="page-2">
+                    <div class="space-y-10">
+                        <!-- Hadith 11: Placeholder -->
+                        <div class="bg-gray-700 rounded-xl shadow-lg p-6">
+                            <h2 class="text-2xl font-bold text-white mb-4">Hadith 11: </h2>
+<p class="text-gray-300 mb-4">حضرت ابوموسیٰ رضی اللہ عنہ سے روایت ہے کہ وہ کہتے ہیں کہ لوگوں نے پوچھا یا رسول اللہ ! کون سا اسلام افضل ہے ؟ تو نبی کریم صلی اللہ علیہ وسلم نے فرمایا وہ جس کے ماننے والے مسلمانوں کی زبان اور ہاتھ سے سارے مسلمان سلامتی میں رہیں ۔ "</p>                    
+                            <div class="audio-player">
+                                <button class="play-btn" data-audio="audio11">
+                                    <svg class="play-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M3 2v12l10-6z"/>
+                                    </svg>
+                                </button>
+                                <div class="progress-container" id="progress11">
+                                    <div class="progress-bar" id="progress-bar11"></div>
+                                </div>
+                                <div class="time-display" id="time11">0:00 / 0:00</div>
+                            </div>
+                            <audio id="audio11" preload="metadata">
+                                <source src="11.mp3" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            
+                            <div class="flex justify-end mt-4">
+                                <a href="https://drive.google.com/file/d/18hd7u3RGH4fZw3IqOIhrOKLlI6XHvSHP/view?usp=drive_link" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                                    Download PDF
+                                </a>
+                            </div>
                         </div>
-                        <div class="time-display" id="time2">0:00 / 0:00</div>
-                    </div>
-                    <audio id="audio2" preload="metadata">
-                        <source src="audio/hadith2.mp3" type="audio/mpeg">
-                        Your browser does not support the audio element.
-                    </audio>
-                    
-                    <div class="flex justify-end mt-4">
-                        <a href="https://mega.nz/file/57EgkDKZ#lqWgCJZylxSArSKjrL_HsOBTI6HlwBq2SQp81YVFUfY" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
-                            Download PDF
-                        </a>
+                        <!-- Hadith 12: Placeholder -->
+                        <div class="bg-gray-700 rounded-xl shadow-lg p-6">
+                            <h2 class="text-2xl font-bold text-white mb-4">Hadith 12: </h2>
+<p class="text-gray-300 mb-4">حضرت عبداللہ بن عمر رضی اللہ عنہما سے روایت ہے کہ ایک دن ایک آدمی نے آنحضرت صلی اللہ علیہ وسلم سے پوچھا کہ کون سا اسلام بہتر ہے ؟ فرمایا کہ تم کھانا کھلاؤ ، اور جس کو پہچانو اس کو بھی اور جس کو نہ پہچانو اس کو بھی ، الغرض سب کو سلام کرو ۔ ‏ "</p>                    
+                            <div class="audio-player">
+                                <button class="play-btn" data-audio="audio12">
+                                    <svg class="play-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M3 2v12l10-6z"/>
+                                    </svg>
+                                </button>
+                                <div class="progress-container" id="progress12">
+                                    <div class="progress-bar" id="progress-bar12"></div>
+                                </div>
+                                <div class="time-display" id="time12">0:00 / 0:00</div>
+                            </div>
+                            <audio id="audio12" preload="metadata">
+                                <source src="12.mp3" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            
+                            <div class="flex justify-end mt-4">
+                                <a href="https://drive.google.com/file/d/1En8uXwan86G_E8lVM5it8P1lwRmelm3y/view?usp=drive_link" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                                    Download PDF
+                                </a>
+                            </div>
+                        </div>
+                        <!-- Hadith 13: Placeholder -->
+                        <div class="bg-gray-700 rounded-xl shadow-lg p-6">
+                            <h2 class="text-2xl font-bold text-white mb-4">Hadith 13: </h2>
+<p class="text-gray-300 mb-4"> حضرت انس رضی اللہ عنہ سے روایت ہے کہ  آنحضرت صلی اللہ علیہ وسلم نے فرمایا تم میں سے کوئی شخص ایماندار نہ ہو گا جب تک اپنے بھائی کے لیے وہ نہ چاہے جو اپنے نفس کے لیے چاہتا ہے"</p>                    
+                            <div class="audio-player">
+                                <button class="play-btn" data-audio="audio13">
+                                    <svg class="play-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M3 2v12l10-6z"/>
+                                    </svg>
+                                </button>
+                                <div class="progress-container" id="progress13">
+                                    <div class="progress-bar" id="progress-bar13"></div>
+                                </div>
+                                <div class="time-display" id="time13">0:00 / 0:00</div>
+                            </div>
+                            <audio id="audio13" preload="metadata">
+                                <source src="13.mp3" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            
+                            <div class="flex justify-end mt-4">
+                                <a href="https://drive.google.com/file/d/1dLoGgr-OJh0pL1tRdhtccW6fsp8yLwuy/view?usp=drive_link" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                                    Download PDF
+                                </a>
+                            </div>
+                        </div>
+                        <!-- Hadith 14: Placeholder -->
+                        <div class="bg-gray-700 rounded-xl shadow-lg p-6">
+                            <h2 class="text-2xl font-bold text-white mb-4">Hadith 14: </h2>
+<p class="text-gray-300 mb-4"> حضرت ابوہریرہ رضی اللہ عنہ سے  روایت ہے کہ بیشک رسول کریم صلی اللہ علیہ وسلم نے فرمایا ، قسم ہے اس ذات کی جس کے ہاتھ میں میری جان ہے ۔ تم میں سے کوئی بھی ایماندار نہ ہو گا جب تک میں اس کے والد اور اولاد سے بھی زیادہ اس کا محبوب نہ بن جاؤں ۔"</p>                    
+                            <div class="audio-player">
+                                <button class="play-btn" data-audio="audio14">
+                                    <svg class="play-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M3 2v12l10-6z"/>
+                                    </svg>
+                                </button>
+                                <div class="progress-container" id="progress14">
+                                    <div class="progress-bar" id="progress-bar14"></div>
+                                </div>
+                                <div class="time-display" id="time14">0:00 / 0:00</div>
+                            </div>
+                            <audio id="audio14" preload="metadata">
+                                <source src="14.mp3" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            
+                            <div class="flex justify-end mt-4">
+                                <a href="https://drive.google.com/file/d/1A2tWyJOyGZTnGydfbHzoyuENruCknl3H/view?usp=drive_link" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                                    Download PDF
+                                </a>
+                            </div>
+                        </div>
+                        <!-- Hadith 15: Placeholder -->
+                        <div class="bg-gray-700 rounded-xl shadow-lg p-6">
+                            <h2 class="text-2xl font-bold text-white mb-4">Hadith 15: </h2>
+<p class="text-gray-300 mb-4">حضرت انس رضی اللہ عنہ سے روایت ہے کہ آنحضرت صلی اللہ علیہ وسلم نے فرمایا تم میں سے کوئی شخص ایماندار نہ ہو گا جب تک اس کے والد اور اس کی اولاد اور تمام لوگوں سے زیادہ اس کے دل میں میری محبت نہ ہو جائے ۔ "</p>                    
+                            <div class="audio-player">
+                                <button class="play-btn" data-audio="audio15">
+                                    <svg class="play-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M3 2v12l10-6z"/>
+                                    </svg>
+                                </button>
+                                <div class="progress-container" id="progress15">
+                                    <div class="progress-bar" id="progress-bar15"></div>
+                                </div>
+                                <div class="time-display" id="time15">0:00 / 0:00</div>
+                            </div>
+                            <audio id="audio15" preload="metadata">
+                                <source src="15.mp3" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            
+                            <div class="flex justify-end mt-4">
+                                <a href="https://drive.google.com/file/d/1jsDMETyHqyEanxHUQ5fYrOOBp8JhdWP6/view?usp=drive_link" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                                    Download PDF
+                                </a>
+                            </div>
+                        </div>
+                        <!-- Hadith 16: Placeholder -->
+                        <div class="bg-gray-700 rounded-xl shadow-lg p-6">
+                            <h2 class="text-2xl font-bold text-white mb-4">Hadith 16: </h2>
+<p class="text-gray-300 mb-4"> حضرت انس رضی اللہ عنہ سے روایت ہے کہ  آپ صلی اللہ علیہ وسلم نے فرمایا تین خصلتیں ایسی ہیں کہ جس میں یہ پیدا ہو جائیں اس نے ایمان کی مٹھاس کو پا لیا ۔ اول یہ کہ اللہ اور اس کا رسول اس کے نزدیک سب سے زیادہ محبوب بن جائیں ، دوسرے یہ کہ وہ کسی انسان سے محض اللہ کی رضا کے لیے محبت رکھے ۔ تیسرے یہ کہ وہ کفر میں واپس لوٹنے کو ایسا برا جانے جیسا کہ آگ میں ڈالے جانے کو برا جانتا ہے ۔"</p>                    
+                            <div class="audio-player">
+                                <button class="play-btn" data-audio="audio16">
+                                    <svg class="play-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M3 2v12l10-6z"/>
+                                    </svg>
+                                </button>
+                                <div class="progress-container" id="progress16">
+                                    <div class="progress-bar" id="progress-bar16"></div>
+                                </div>
+                                <div class="time-display" id="time16">0:00 / 0:00</div>
+                            </div>
+                            <audio id="audio16" preload="metadata">
+                                <source src="16.mp3" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            
+                            <div class="flex justify-end mt-4">
+                                <a href="https://drive.google.com/file/d/1QmiyqnzUHKcXpmXbXSdzkLTvHO4TiaZx/view?usp=drive_link" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                                    Download PDF
+                                </a>
+                            </div>
+                        </div>
+                        <!-- Hadith 17: Placeholder -->
+                        <div class="bg-gray-700 rounded-xl shadow-lg p-6">
+                            <h2 class="text-2xl font-bold text-white mb-4">Hadith 17: </h2>
+<p class="text-gray-300 mb-4"> حضرت انس بن مالک رضی اللہ عنہ سے روایت ہے   کہ آپ صلی اللہ علیہ وسلم نے فرمایا انصار سے محبت رکھنا ایمان کی نشانی ہے اور انصار سے کینہ رکھنا نفاق کی نشانی ہے ۔"</p>                    
+                            <div class="audio-player">
+                                <button class="play-btn" data-audio="audio17">
+                                    <svg class="play-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M3 2v12l10-6z"/>
+                                    </svg>
+                                </button>
+                                <div class="progress-container" id="progress17">
+                                    <div class="progress-bar" id="progress-bar17"></div>
+                                </div>
+                                <div class="time-display" id="time17">0:00 / 0:00</div>
+                            </div>
+                            <audio id="audio17" preload="metadata">
+                                <source src="17.mp3" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            
+                            <div class="flex justify-end mt-4">
+                                <a href="https://drive.google.com/file/d/1tCmXXRjobOfKR6IMzr7LIMKuLqzN1HwT/view?usp=drive_link" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                                    Download PDF
+                                </a>
+                            </div>
+                        </div>
+                        <!-- Hadith 18: Placeholder -->
+                        <div class="bg-gray-700 rounded-xl shadow-lg p-6">
+                            <h2 class="text-2xl font-bold text-white mb-4">Hadith 18: </h2>
+<p class="text-gray-300 mb-4">حضرت عبادہ بن صامت رضی اللہ عنہ  سے روایت ہے حضرت عبادہ بن صامت جو کے بدر کی لڑائی میں شریک تھے اور لیلۃالعقبہ کے ( بارہ ) نقیبوں میں سے تھے ۔ فرماتے ہیں کہ رسول اللہ صلی اللہ علیہ وسلم نے اس وقت جب آپ کے گرد صحابہ کی ایک جماعت بیٹھی ہوئی تھی فرمایا کہ مجھ سے بیعت کرو اس بات پر کہ اللہ کے ساتھ کسی کو شریک نہ کرو گے ، چوری نہ کرو گے ، زنا نہ کرو گے ، اپنی اولاد کو قتل نہ کرو گے اور نہ عمداً کسی پر کوئی ناحق بہتان باندھو گے اور کسی بھی اچھی بات میں ( خدا کی ) نافرمانی نہ کرو گے ۔ جو کوئی تم میں ( اس عہد کو ) پورا کرے گا تو اس کا ثواب اللہ کے ذمے ہے اور جو کوئی ان ( بری باتوں ) میں سے کسی کا ارتکاب کرے اور اسے دنیا میں ( اسلامی قانون کے تحت ) سزا دے دی گئی تو یہ سزا اس کے ( گناہوں کے ) لیے بدلا ہو جائے گی اور جو کوئی ان میں سے کسی بات میں مبتلا ہو گیا اور اللہ نے اس کے ( گناہ ) کو چھپا لیا تو پھر اس کا ( معاملہ ) اللہ کے حوالہ ہے ، اگر چاہے معاف کرے اور اگر چاہے سزا دیدے ۔ ( عبادہ کہتے ہیں کہ ) پھر ہم سب نے ان ( سب باتوں ) پر آپ صلی اللہ علیہ وسلم سے بیعت کر لی ۔ "</p>                    
+                            <div class="audio-player">
+                                <button class="play-btn" data-audio="audio18">
+                                    <svg class="play-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M3 2v12l10-6z"/>
+                                    </svg>
+                                </button>
+                                <div class="progress-container" id="progress18">
+                                    <div class="progress-bar" id="progress-bar18"></div>
+                                </div>
+                                <div class="time-display" id="time18">0:00 / 0:00</div>
+                            </div>
+                            <audio id="audio18" preload="metadata">
+                                <source src="18.mp3" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            
+                            <div class="flex justify-end mt-4">
+                                <a href="https://drive.google.com/file/d/1WQRKd75CfQJPcKKOLTyM4DXZ6aCQIZzX/view?usp=drive_link" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                                    Download PDF
+                                </a>
+                            </div>
+                        </div>
+                        <!-- Hadith 19: Placeholder -->
+                        <div class="bg-gray-700 rounded-xl shadow-lg p-6">
+                            <h2 class="text-2xl font-bold text-white mb-4">Hadith 19: </h2>
+<p class="text-gray-300 mb-4">حضرت ابو سعید خدری سے روایت ہے  کہ رسول اللہ صلی اللہ علیہ وسلم نے فرمایا وہ وقت قریب ہے جب مسلمان کا ( سب سے ) عمدہ مال ( اس کی بکریاں ہوں گی ) ۔ جن کے پیچھے وہ پہاڑوں کی چوٹیوں اور برساتی وادیوں میں اپنے دین کو بچانے کے لیے بھاگ جائے گا ۔ "</p>                    
+                            <div class="audio-player">
+                                <button class="play-btn" data-audio="audio19">
+                                    <svg class="play-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M3 2v12l10-6z"/>
+                                    </svg>
+                                </button>
+                                <div class="progress-container" id="progress19">
+                                    <div class="progress-bar" id="progress-bar19"></div>
+                                </div>
+                                <div class="time-display" id="time19">0:00 / 0:00</div>
+                            </div>
+                            <audio id="audio19" preload="metadata">
+                                <source src="19.mp3" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            
+                            <div class="flex justify-end mt-4">
+                                <a href="https://drive.google.com/file/d/1pWZVUa068Nnv-hnjTaBFKAt4Wjw7iSXF/view?usp=drive_link" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                                    Download PDF
+                                </a>
+                            </div>
+                        </div>
+                        <!-- Hadith 20: Placeholder -->
+                        <div class="bg-gray-700 rounded-xl shadow-lg p-6">
+                            <h2 class="text-2xl font-bold text-white mb-4">Hadith 20: </h2>
+<p class="text-gray-300 mb-4">حضرت عائشہ رضی اللہ عنہا سے روایت ہے کہ  وہ فرماتی ہیں کہ رسول اللہ صلی اللہ علیہ وسلم لوگوں کو کسی کام کا حکم دیتے تو وہ ایسا ہی کام ہوتا جس کے کرنے کی لوگوں میں طاقت ہوتی ( اس پر ) صحابہ رضی اللہ عنہم نے عرض کیا کہ یا رسول اللہ ! ہم لوگ تو آپ جیسے نہیں ہیں ( آپ تو معصوم ہیں ) اور آپ کی اللہ پاک نے اگلی پچھلی سب لغزشیں معاف فرما دی ہیں ۔ ( اس لیے ہمیں اپنے سے کچھ زیادہ عبادت کرنے کا حکم فرمائیے ) ( یہ سن کر ) آپ صلی اللہ علیہ وسلم ناراض ہوئے حتیٰ کہ خفگی آپ صلی اللہ علیہ وسلم کے چہرہ مبارک سے ظاہر ہونے لگی ۔ پھر فرمایا کہ بیشک میں تم سب سے زیادہ اللہ سے ڈرتا ہوں اور تم سب سے زیادہ اسے جانتا ہوں ۔ ( پس تم مجھ سے بڑھ کر عبادت نہیں کر سکتے ) ۔ "</p>                    
+                            <div class="audio-player">
+                                <button class="play-btn" data-audio="audio20">
+                                    <svg class="play-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M3 2v12l10-6z"/>
+                                    </svg>
+                                </button>
+                                <div class="progress-container" id="progress20">
+                                    <div class="progress-bar" id="progress-bar20"></div>
+                                </div>
+                                <div class="time-display" id="time20">0:00 / 0:00</div>
+                            </div>
+                            <audio id="audio20" preload="metadata">
+                                <source src="20.mp3" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            
+                            <div class="flex justify-end mt-4">
+                                <a href="https://drive.google.com/file/d/12X3_8v9mlmICuXWhG4_Mnkj5Pedz-NTu/view?usp=drive_link" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                                    Download PDF
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Continue with the remaining hadiths (3-30) -->
-                <!-- I'll show a few more examples and then you can continue the pattern -->
-                
-                <div class="bg-gray-700 rounded-xl shadow-lg p-6">
-                    <h2 class="text-2xl font-bold text-white mb-4">Hadith 3: Knowledge</h2>
-                    <p class="text-gray-300 mb-4">Narrated Ibn 'Umar: Allah's Messenger (ﷺ) said, "While I was sleeping, I was given a bowl of milk..."</p>
-                    
-                    <div class="audio-player">
-                        <button class="play-btn" data-audio="audio3">
-                            <svg class="play-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                                <path d="M3 2v12l10-6z"/>
-                            </svg>
-                        </button>
-                        <div class="progress-container" id="progress3">
-                            <div class="progress-bar" id="progress-bar3"></div>
+                <!-- Page 3 (Hadiths 21-30) -->
+                <div class="hadith-page" id="page-3">
+                    <div class="space-y-10">
+                        <!-- Hadith 21: Placeholder -->
+                        <div class="bg-gray-700 rounded-xl shadow-lg p-6">
+                            <h2 class="text-2xl font-bold text-white mb-4">Hadith 21: </h2>
+<p class="text-gray-300 mb-4"> حضرت انس رضی اللہ عنہ سے روایت ہے کہ  آپ صلی اللہ علیہ وسلم نے فرمایا ، جس شخص میں یہ تین باتیں ہوں گی وہ ایمان کا مزہ پالے گا ، ایک یہ کہ وہ شخص جسے اللہ اور اس کا رسول ان کے ماسوا سے زیادہ عزیز ہوں اور دوسرے یہ کہ جو کسی بندے سے محض اللہ ہی کے لیے محبت کرے اور تیسری بات یہ کہ جسے اللہ نے کفر سے نجات دی ہو ، پھر دوبارہ کفر اختیار کرنے کو وہ ایسا برا سمجھے جیسا آگ میں گر جانے کو برا جانتا ہے ۔"</p>                    
+                            <div class="audio-player">
+                                <button class="play-btn" data-audio="audio21">
+                                    <svg class="play-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M3 2v12l10-6z"/>
+                                    </svg>
+                                </button>
+                                <div class="progress-container" id="progress21">
+                                    <div class="progress-bar" id="progress-bar21"></div>
+                                </div>
+                                <div class="time-display" id="time21">0:00 / 0:00</div>
+                            </div>
+                            <audio id="audio21" preload="metadata">
+                                <source src="21.mp3" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            
+                            <div class="flex justify-end mt-4">
+                                <a href="https://drive.google.com/file/d/1u1VBT96iqceKCRGgLxeqYBxjNw48eIOc/view?usp=drive_link" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                                    Download PDF
+                                </a>
+                            </div>
                         </div>
-                        <div class="time-display" id="time3">0:00 / 0:00</div>
-                    </div>
-                    <audio id="audio3" preload="metadata">
-                        <source src="audio/hadith3.mp3" type="audio/mpeg">
-                        Your browser does not support the audio element.
-                    </audio>
-                    
-                    <div class="flex justify-end mt-4">
-                        <a href="https://mega.nz/file/930mDaKC#YdP-XhEDqJ2RsxlNC2A7ylqWSMW7Cw4Tfe2S5iX6KPs" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
-                            Download PDF
-                        </a>
+                        <!-- Hadith 22: Placeholder -->
+                        <div class="bg-gray-700 rounded-xl shadow-lg p-6">
+                            <h2 class="text-2xl font-bold text-white mb-4">Hadith 22: </h2>
+<p class="text-gray-300 mb-4">حضرت ابو سعید خدری رضی اللہ عنہ سے روایت ہے  کہ آپ صلی اللہ علیہ وسلم نے فرمایا جب جنتی جنت میں اور دوزخی دوزخ میں داخل ہو جائیں گے ۔ اللہ پاک فرمائے گا ، جس کے دل میں رائی کے دانے کے برابر ( بھی ) ایمان ہو ، اس کو بھی دوزخ سے نکال لو ۔ تب ( ایسے لوگ ) دوزخ سے نکال لیے جائیں گے اور وہ جل کر کوئلے کی طرح سیاہ ہو چکے ہوں گے ۔ پھر زندگی کی نہر میں یا بارش کے پانی میں ڈالے جائیں گے ۔ ( یہاں راوی کو شک ہو گیا ہے کہ اوپر کے راوی نے کون سا لفظ استعمال کیا ) اس وقت وہ دانے کی طرح اگ آئیں گے جس طرح ندی کے کنارے دانے اگ آتے ہیں ۔ کیا تم نے نہیں دیکھا کہ دانہ زردی مائل پیچ در پیچ نکلتا ہے ۔ وہیب نے کہا کہ ہم سے عمرو نے ( «حياء» کی بجائے ) «حياة» ، اور («خردل من ايمان» ) کی بجائے ( «خردل من خير» ) کا لفظ بیان کیا ۔ "</p>                    
+                            <div class="audio-player">
+                                <button class="play-btn" data-audio="audio22">
+                                    <svg class="play-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M3 2v12l10-6z"/>
+                                    </svg>
+                                </button>
+                                <div class="progress-container" id="progress22">
+                                    <div class="progress-bar" id="progress-bar22"></div>
+                                </div>
+                                <div class="time-display" id="time22">0:00 / 0:00</div>
+                            </div>
+                            <audio id="audio22" preload="metadata">
+                                <source src="22.mp3" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            
+                            <div class="flex justify-end mt-4">
+                                <a href="https://drive.google.com/file/d/1wpvG8q_hI9xkxsKVFdmPxu77GPJbrcNS/view?usp=drive_link" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                                    Download PDF
+                                </a>
+                            </div>
+                        </div>
+                        <!-- Hadith 23: Placeholder -->
+                        <div class="bg-gray-700 rounded-xl shadow-lg p-6">
+                            <h2 class="text-2xl font-bold text-white mb-4">Hadith 23: </h2>
+<p class="text-gray-300 mb-4">حضرت ابو سعید خدری رضی اللہ عنہ سے روایت ہے کہ  وہ کہتے تھے کہ رسول اللہ صلی اللہ علیہ وسلم نے فرمایا کہ میں ایک وقت سو رہا تھا ، میں نے خواب میں دیکھا کہ لوگ میرے سامنے پیش کیے جا رہے ہیں اور وہ کرتے پہنے ہوئے ہیں ۔ کسی کا کرتہ سینے تک ہے اور کسی کا اس سے نیچا ہے ۔ ( پھر ) میرے سامنے عمر بن الخطاب لائے گئے ۔ ان ( کے بدن ) پر ( جو ) کرتا تھا ۔ اسے وہ گھسیٹ رہے تھے ۔ ( یعنی ان کا کرتہ زمین تک نیچا تھا ) صحابہ نے پوچھا کہ یا رسول اللہ ! اس کی کیا تعبیر ہے ؟ آپ صلی اللہ علیہ وسلم نے فرمایا کہ ( اس سے ) دین مراد ہے ۔ "</p>                    
+                            <div class="audio-player">
+                                <button class="play-btn" data-audio="audio23">
+                                    <svg class="play-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M3 2v12l10-6z"/>
+                                    </svg>
+                                </button>
+                                <div class="progress-container" id="progress23">
+                                    <div class="progress-bar" id="progress-bar23"></div>
+                                </div>
+                                <div class="time-display" id="time23">0:00 / 0:00</div>
+                            </div>
+                            <audio id="audio23" preload="metadata">
+                                <source src="23.mp3" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            
+                            <div class="flex justify-end mt-4">
+                                <a href="https://drive.google.com/file/d/1KPqA8S-0gym3B8XCqWbEIWtacYrXGKVF/view?usp=drive_link" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                                    Download PDF
+                                </a>
+                            </div>
+                        </div>
+                        <!-- Hadith 24: Placeholder -->
+                        <div class="bg-gray-700 rounded-xl shadow-lg p-6">
+                            <h2 class="text-2xl font-bold text-white mb-4">Hadith 24: </h2>
+<p class="text-gray-300 mb-4">حضرت عبداللہ بن عمر رضی اللہ عنہما  سے روایت ہے  کہ ایک دفعہ رسول کریم صلی اللہ علیہ وسلم ایک انصاری شخص کے پاس سے گزرے اس حال میں کہ وہ اپنے ایک بھائی سے کہہ رہے تھے کہ تم اتنی شرم کیوں کرتے ہو ۔ آپ صلی اللہ علیہ وسلم نے اس انصاری سے فرمایا کہ اس کو اس کے حال پر رہنے دو کیونکہ حیاء بھی ایمان ہی کا ایک حصہ ہے ۔ "</p>                    
+                            <div class="audio-player">
+                                <button class="play-btn" data-audio="audio24">
+                                    <svg class="play-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M3 2v12l10-6z"/>
+                                    </svg>
+                                </button>
+                                <div class="progress-container" id="progress24">
+                                    <div class="progress-bar" id="progress-bar24"></div>
+                                </div>
+                                <div class="time-display" id="time24">0:00 / 0:00</div>
+                            </div>
+                            <audio id="audio24" preload="metadata">
+                                <source src="24.mp3" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            
+                            <div class="flex justify-end mt-4">
+                                <a href="https://drive.google.com/file/d/1AipzvN8lpaOmUfxkSrp8VaZGNX7ukz8e/view?usp=drive_link" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                                    Download PDF
+                                </a>
+                            </div>
+                        </div>
+                        <!-- Hadith 25: Placeholder -->
+                        <div class="bg-gray-700 rounded-xl shadow-lg p-6">
+                            <h2 class="text-2xl font-bold text-white mb-4">Hadith 25: </h2>
+
+<p class="text-gray-300 mb-4"> حضرت ابن عمر رضی اللہ عنہما سے روایت کرتے ہیں کہ رسول اللہ صلی اللہ علیہ وسلم نے فرمایا ۔ مجھے ( اللہ کی طرف سے ) حکم دیا گیا ہے کہ لوگوں سے جنگ کروں اس وقت تک کہ وہ اس بات کا اقرار کر لیں کہ اللہ کے سوا کوئی معبود نہیں ہے اور یہ کہ محمد صلی اللہ علیہ وسلم اللہ کے سچے رسول ہیں اور نماز ادا کرنے لگیں اور زکوٰۃ دیں ، جس وقت وہ یہ کرنے لگیں گے تو مجھ سے اپنے جان و مال کو محفوظ کر لیں گے ، سوائے اسلام کے حق کے ۔ ( رہا ان کے دل کا حال تو ) ان کا حساب اللہ کے ذمے ہے ۔"</p>                    
+                               <div class="audio-player">
+                                <button class="play-btn" data-audio="audio25">
+                                    <svg class="play-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M3 2v12l10-6z"/>
+                                    </svg>
+                                </button>
+                                <div class="progress-container" id="progress25">
+                                    <div class="progress-bar" id="progress-bar25"></div>
+                                </div>
+                                <div class="time-display" id="time25">0:00 / 0:00</div>
+                            </div>
+                            <audio id="audio25" preload="metadata">
+                                <source src="25.mp3" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            
+                            <div class="flex justify-end mt-4">
+                                <a href="https://drive.google.com/file/d/1oLbVIfa1JxH4KHMJHpq_RVnQ0JAvlsc8/view?usp=drive_link" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                                    Download PDF
+                                </a>
+                            </div>
+                        </div>
+                        <!-- Hadith 26: Placeholder -->
+                        <div class="bg-gray-700 rounded-xl shadow-lg p-6">
+                            <h2 class="text-2xl font-bold text-white mb-4">Hadith 26: </h2>
+<p class="text-gray-300 mb-4"> "</p>                    
+                            <div class="audio-player">
+                                <button class="play-btn" data-audio="audio26">
+                                    <svg class="play-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M3 2v12l10-6z"/>
+                                    </svg>
+                                </button>
+                                <div class="progress-container" id="progress26">
+                                    <div class="progress-bar" id="progress-bar26"></div>
+                                </div>
+                                <div class="time-display" id="time26">0:00 / 0:00</div>
+                            </div>
+                            <audio id="audio26" preload="metadata">
+                                <source src="26.mp3" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            
+                            <div class="flex justify-end mt-4">
+                                <a href="https://drive.google.com/file/d/PLACEHOLDER_FOR_HADITH_26/view?usp=drive_link" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                                    Download PDF
+                                </a>
+                            </div>
+                        </div>
+                        <!-- Hadith 27: Placeholder -->
+                        <div class="bg-gray-700 rounded-xl shadow-lg p-6">
+                            <h2 class="text-2xl font-bold text-white mb-4">Hadith 27: </h2>
+<p class="text-gray-300 mb-4"> "</p>                    
+                            <div class="audio-player">
+                                <button class="play-btn" data-audio="audio27">
+                                    <svg class="play-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M3 2v12l10-6z"/>
+                                    </svg>
+                                </button>
+                                <div class="progress-container" id="progress27">
+                                    <div class="progress-bar" id="progress-bar27"></div>
+                                </div>
+                                <div class="time-display" id="time27">0:00 / 0:00</div>
+                            </div>
+                            <audio id="audio27" preload="metadata">
+                                <source src="27.mp3" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            
+                            <div class="flex justify-end mt-4">
+                                <a href="https://drive.google.com/file/d/PLACEHOLDER_FOR_HADITH_27/view?usp=drive_link" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                                    Download PDF
+                                </a>
+                            </div>
+                        </div>
+                        <!-- Hadith 28: Placeholder -->
+                        <div class="bg-gray-700 rounded-xl shadow-lg p-6">
+                            <h2 class="text-2xl font-bold text-white mb-4">Hadith 28: </h2>
+<p class="text-gray-300 mb-4"> "</p>                    
+                            <div class="audio-player">
+                                <button class="play-btn" data-audio="audio28">
+                                    <svg class="play-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M3 2v12l10-6z"/>
+                                    </svg>
+                                </button>
+                                <div class="progress-container" id="progress28">
+                                    <div class="progress-bar" id="progress-bar28"></div>
+                                </div>
+                                <div class="time-display" id="time28">0:00 / 0:00</div>
+                            </div>
+                            <audio id="audio28" preload="metadata">
+                                <source src="28.mp3" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            
+                            <div class="flex justify-end mt-4">
+                                <a href="https://drive.google.com/file/d/PLACEHOLDER_FOR_HADITH_28/view?usp=drive_link" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                                    Download PDF
+                                </a>
+                            </div>
+                        </div>
+                        <!-- Hadith 29: Placeholder -->
+                        <div class="bg-gray-700 rounded-xl shadow-lg p-6">
+                            <h2 class="text-2xl font-bold text-white mb-4">Hadith 29: </h2>
+<p class="text-gray-300 mb-4"> "</p>                    
+                            <div class="audio-player">
+                                <button class="play-btn" data-audio="audio29">
+                                    <svg class="play-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M3 2v12l10-6z"/>
+                                    </svg>
+                                </button>
+                                <div class="progress-container" id="progress29">
+                                    <div class="progress-bar" id="progress-bar29"></div>
+                                </div>
+                                <div class="time-display" id="time29">0:00 / 0:00</div>
+                            </div>
+                            <audio id="audio29" preload="metadata">
+                                <source src="29.mp3" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            
+                            <div class="flex justify-end mt-4">
+                                <a href="https://drive.google.com/file/d/PLACEHOLDER_FOR_HADITH_29/view?usp=drive_link" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                                    Download PDF
+                                </a>
+                            </div>
+                        </div>
+                        <!-- Hadith 30: Placeholder -->
+                        <div class="bg-gray-700 rounded-xl shadow-lg p-6">
+                            <h2 class="text-2xl font-bold text-white mb-4">Hadith 30: </h2>
+<p class="text-gray-300 mb-4"> "</p>                    
+                            <div class="audio-player">
+                                <button class="play-btn" data-audio="audio30">
+                                    <svg class="play-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M3 2v12l10-6z"/>
+                                    </svg>
+                                </button>
+                                <div class="progress-container" id="progress30">
+                                    <div class="progress-bar" id="progress-bar30"></div>
+                                </div>
+                                <div class="time-display" id="time30">0:00 / 0:00</div>
+                            </div>
+                            <audio id="audio30" preload="metadata">
+                                <source src="30.mp3" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            
+                            <div class="flex justify-end mt-4">
+                                <a href="https://drive.google.com/file/d/PLACEHOLDER_FOR_HADITH_30/view?usp=drive_link" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                                    Download PDF
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Continue this pattern for all 30 hadiths -->
-                <!-- For brevity, I'll show just the first 3, but you would continue to hadith 30 -->
-                
+                <!-- Page 4 (Hadiths 31-40) -->
+                <div class="hadith-page" id="page-4">
+                    <div class="space-y-10">
+                        <!-- Hadith 31: Placeholder -->
+                        <div class="bg-gray-700 rounded-xl shadow-lg p-6">
+                            <h2 class="text-2xl font-bold text-white mb-4">Hadith 31: </h2>
+<p class="text-gray-300 mb-4"> "</p>                    
+                            <div class="audio-player">
+                                <button class="play-btn" data-audio="audio31">
+                                    <svg class="play-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M3 2v12l10-6z"/>
+                                    </svg>
+                                </button>
+                                <div class="progress-container" id="progress31">
+                                    <div class="progress-bar" id="progress-bar31"></div>
+                                </div>
+                                <div class="time-display" id="time31">0:00 / 0:00</div>
+                            </div>
+                            <audio id="audio31" preload="metadata">
+                                <source src="31.mp3" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            
+                            <div class="flex justify-end mt-4">
+                                <a href="https://drive.google.com/file/d/PLACEHOLDER_FOR_HADITH_31/view?usp=drive_link" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                                    Download PDF
+                                </a>
+                            </div>
+                        </div>
+                        <!-- Hadith 32: Placeholder -->
+                        <div class="bg-gray-700 rounded-xl shadow-lg p-6">
+                            <h2 class="text-2xl font-bold text-white mb-4">Hadith 32: </h2>
+<p class="text-gray-300 mb-4"> "</p>                    
+                            <div class="audio-player">
+                                <button class="play-btn" data-audio="audio32">
+                                    <svg class="play-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M3 2v12l10-6z"/>
+                                    </svg>
+                                </button>
+                                <div class="progress-container" id="progress32">
+                                    <div class="progress-bar" id="progress-bar32"></div>
+                                </div>
+                                <div class="time-display" id="time32">0:00 / 0:00</div>
+                            </div>
+                            <audio id="audio32" preload="metadata">
+                                <source src="32.mp3" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            
+                            <div class="flex justify-end mt-4">
+                                <a href="https://drive.google.com/file/d/PLACEHOLDER_FOR_HADITH_32/view?usp=drive_link" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                                    Download PDF
+                                </a>
+                            </div>
+                        </div>
+                        <!-- Hadith 33: Placeholder -->
+                        <div class="bg-gray-700 rounded-xl shadow-lg p-6">
+                            <h2 class="text-2xl font-bold text-white mb-4">Hadith 33: </h2>
+<p class="text-gray-300 mb-4"> "</p>                    
+                            <div class="audio-player">
+                                <button class="play-btn" data-audio="audio33">
+                                    <svg class="play-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M3 2v12l10-6z"/>
+                                    </svg>
+                                </button>
+                                <div class="progress-container" id="progress33">
+                                    <div class="progress-bar" id="progress-bar33"></div>
+                                </div>
+                                <div class="time-display" id="time33">0:00 / 0:00</div>
+                            </div>
+                            <audio id="audio33" preload="metadata">
+                                <source src="33.mp3" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            
+                            <div class="flex justify-end mt-4">
+                                <a href="https://drive.google.com/file/d/PLACEHOLDER_FOR_HADITH_33/view?usp=drive_link" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                                    Download PDF
+                                </a>
+                            </div>
+                        </div>
+                        <!-- Hadith 34: Placeholder -->
+                        <div class="bg-gray-700 rounded-xl shadow-lg p-6">
+                            <h2 class="text-2xl font-bold text-white mb-4">Hadith 34: </h2>
+<p class="text-gray-300 mb-4"> "</p>                    
+                            <div class="audio-player">
+                                <button class="play-btn" data-audio="audio34">
+                                    <svg class="play-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M3 2v12l10-6z"/>
+                                    </svg>
+                                </button>
+                                <div class="progress-container" id="progress34">
+                                    <div class="progress-bar" id="progress-bar34"></div>
+                                </div>
+                                <div class="time-display" id="time34">0:00 / 0:00</div>
+                            </div>
+                            <audio id="audio34" preload="metadata">
+                                <source src="34.mp3" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            
+                            <div class="flex justify-end mt-4">
+                                <a href="https://drive.google.com/file/d/PLACEHOLDER_FOR_HADITH_34/view?usp=drive_link" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                                    Download PDF
+                                </a>
+                            </div>
+                        </div>
+                        <!-- Hadith 35: Placeholder -->
+                        <div class="bg-gray-700 rounded-xl shadow-lg p-6">
+                            <h2 class="text-2xl font-bold text-white mb-4">Hadith 35: </h2>
+<p class="text-gray-300 mb-4"> "</p>                    
+                            <div class="audio-player">
+                                <button class="play-btn" data-audio="audio35">
+                                    <svg class="play-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M3 2v12l10-6z"/>
+                                    </svg>
+                                </button>
+                                <div class="progress-container" id="progress35">
+                                    <div class="progress-bar" id="progress-bar35"></div>
+                                </div>
+                                <div class="time-display" id="time35">0:00 / 0:00</div>
+                            </div>
+                            <audio id="audio35" preload="metadata">
+                                <source src="35.mp3" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            
+                            <div class="flex justify-end mt-4">
+                                <a href="https://drive.google.com/file/d/PLACEHOLDER_FOR_HADITH_35/view?usp=drive_link" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                                    Download PDF
+                                </a>
+                            </div>
+                        </div>
+                        <!-- Hadith 36: Placeholder -->
+                        <div class="bg-gray-700 rounded-xl shadow-lg p-6">
+                            <h2 class="text-2xl font-bold text-white mb-4">Hadith 36: </h2>
+<p class="text-gray-300 mb-4"> "</p>                    
+                            <div class="audio-player">
+                                <button class="play-btn" data-audio="audio36">
+                                    <svg class="play-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M3 2v12l10-6z"/>
+                                    </svg>
+                                </button>
+                                <div class="progress-container" id="progress36">
+                                    <div class="progress-bar" id="progress-bar36"></div>
+                                </div>
+                                <div class="time-display" id="time36">0:00 / 0:00</div>
+                            </div>
+                            <audio id="audio36" preload="metadata">
+                                <source src="36.mp3" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            
+                            <div class="flex justify-end mt-4">
+                                <a href="https://drive.google.com/file/d/PLACEHOLDER_FOR_HADITH_36/view?usp=drive_link" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                                    Download PDF
+                                </a>
+                            </div>
+                        </div>
+                        <!-- Hadith 37: Placeholder -->
+                        <div class="bg-gray-700 rounded-xl shadow-lg p-6">
+                            <h2 class="text-2xl font-bold text-white mb-4">Hadith 37: </h2>
+<p class="text-gray-300 mb-4"> "</p>                    
+                            <div class="audio-player">
+                                <button class="play-btn" data-audio="audio37">
+                                    <svg class="play-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M3 2v12l10-6z"/>
+                                    </svg>
+                                </button>
+                                <div class="progress-container" id="progress37">
+                                    <div class="progress-bar" id="progress-bar37"></div>
+                                </div>
+                                <div class="time-display" id="time37">0:00 / 0:00</div>
+                            </div>
+                            <audio id="audio37" preload="metadata">
+                                <source src="37.mp3" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            
+                            <div class="flex justify-end mt-4">
+                                <a href="https://drive.google.com/file/d/PLACEHOLDER_FOR_HADITH_37/view?usp=drive_link" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                                    Download PDF
+                                </a>
+                            </div>
+                        </div>
+                        <!-- Hadith 38: Placeholder -->
+                        <div class="bg-gray-700 rounded-xl shadow-lg p-6">
+                            <h2 class="text-2xl font-bold text-white mb-4">Hadith 38: </h2>
+<p class="text-gray-300 mb-4"> "</p>                    
+                            <div class="audio-player">
+                                <button class="play-btn" data-audio="audio38">
+                                    <svg class="play-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M3 2v12l10-6z"/>
+                                    </svg>
+                                </button>
+                                <div class="progress-container" id="progress38">
+                                    <div class="progress-bar" id="progress-bar38"></div>
+                                </div>
+                                <div class="time-display" id="time38">0:00 / 0:00</div>
+                            </div>
+                            <audio id="audio38" preload="metadata">
+                                <source src="38.mp3" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            
+                            <div class="flex justify-end mt-4">
+                                <a href="https://drive.google.com/file/d/PLACEHOLDER_FOR_HADITH_38/view?usp=drive_link" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                                    Download PDF
+                                </a>
+                            </div>
+                        </div>
+                        <!-- Hadith 39: Placeholder -->
+                        <div class="bg-gray-700 rounded-xl shadow-lg p-6">
+                            <h2 class="text-2xl font-bold text-white mb-4">Hadith 39: </h2>
+<p class="text-gray-300 mb-4"> "</p>                    
+                            <div class="audio-player">
+                                <button class="play-btn" data-audio="audio39">
+                                    <svg class="play-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M3 2v12l10-6z"/>
+                                    </svg>
+                                </button>
+                                <div class="progress-container" id="progress39">
+                                    <div class="progress-bar" id="progress-bar39"></div>
+                                </div>
+                                <div class="time-display" id="time39">0:00 / 0:00</div>
+                            </div>
+                            <audio id="audio39" preload="metadata">
+                                <source src="39.mp3" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            
+                            <div class="flex justify-end mt-4">
+                                <a href="https://drive.google.com/file/d/PLACEHOLDER_FOR_HADITH_39/view?usp=drive_link" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                                    Download PDF
+                                </a>
+                            </div>
+                        </div>
+                        <!-- Hadith 40: Placeholder -->
+                        <div class="bg-gray-700 rounded-xl shadow-lg p-6">
+                            <h2 class="text-2xl font-bold text-white mb-4">Hadith 40: </h2>
+<p class="text-gray-300 mb-4"> "</p>                    
+                            <div class="audio-player">
+                                <button class="play-btn" data-audio="audio40">
+                                    <svg class="play-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M3 2v12l10-6z"/>
+                                    </svg>
+                                </button>
+                                <div class="progress-container" id="progress40">
+                                    <div class="progress-bar" id="progress-bar40"></div>
+                                </div>
+                                <div class="time-display" id="time40">0:00 / 0:00</div>
+                            </div>
+                            <audio id="audio40" preload="metadata">
+                                <source src="40.mp3" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            
+                            <div class="flex justify-end mt-4">
+                                <a href="https://drive.google.com/file/d/PLACEHOLDER_FOR_HADITH_40/view?usp=drive_link" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                                    Download PDF
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pagination Controls -->
+            <div class="pagination-controls">
+                <button id="prevPageBtn" class="pagination-button" disabled>Previous</button>
+                <span id="pageInfo" class="page-info">Page 1 of 4</span>
+                <button id="nextPageBtn" class="pagination-button">Next</button>
             </div>
         </div>
     </main>
@@ -689,7 +1756,7 @@
         </div>
     </footer>
 
-    <!-- JavaScript for Weather Effects -->
+    <!-- JavaScript for Weather Effects and Pagination -->
     <script>
         // Weather Effects
         const rainContainer = document.getElementById('rain');
@@ -891,7 +1958,7 @@
                     // Adjust rain sound volume based on intensity
                     rainSound.volume = Math.min(rainIntensity / 100, 0.7);
                     
-                    if (rainIntensity > 0 && !rainSound.playing) {
+                    if (rainIntensity > 0 && !rainSound.paused) { // Check if not paused before playing
                         rainSound.play();
                     }
                 } else if (option.parentElement.id === 'windIntensityMenu') {
@@ -905,7 +1972,7 @@
                     // Adjust wind sound volume based on intensity
                     windSound.volume = Math.min(windIntensity / 100, 0.5);
                     
-                    if (windIntensity > 0 && !windSound.playing) {
+                    if (windIntensity > 0 && !windSound.paused) { // Check if not paused before playing
                         windSound.play();
                     }
                 }
@@ -929,9 +1996,14 @@
         document.querySelectorAll('.play-btn').forEach(button => {
             const audioId = button.getAttribute('data-audio');
             const audio = document.getElementById(audioId);
-            const progressBar = document.getElementById(`progress-bar${audioId.slice(-1)}`);
-            const progressContainer = document.getElementById(`progress${audioId.slice(-1)}`);
-            const timeDisplay = document.getElementById(`time${audioId.slice(-1)}`);
+            // Check if audio element exists before proceeding
+            if (!audio) {
+                console.warn(`Audio element with ID '${audioId}' not found.`);
+                return; 
+            }
+            const progressBar = document.getElementById(`progress-bar${audioId.replace('audio', '')}`);
+            const progressContainer = document.getElementById(`progress${audioId.replace('audio', '')}`);
+            const timeDisplay = document.getElementById(`time${audioId.replace('audio', '')}`);
             
             // Format time function
             function formatTime(seconds) {
@@ -942,6 +2014,10 @@
             
             // Update progress bar
             function updateProgress() {
+                if (isNaN(audio.duration)) { // Handle cases where duration is not yet available
+                    timeDisplay.textContent = `Loading...`;
+                    return;
+                }
                 const percent = (audio.currentTime / audio.duration) * 100;
                 progressBar.style.width = `${percent}%`;
                 timeDisplay.textContent = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
@@ -949,6 +2025,7 @@
             
             // Set progress on click
             function setProgress(e) {
+                if (isNaN(audio.duration)) return; // Prevent seeking if duration is not known
                 const width = this.clientWidth;
                 const clickX = e.offsetX;
                 const duration = audio.duration;
@@ -958,6 +2035,18 @@
             
             // Play/pause audio
             button.addEventListener('click', function() {
+                // Pause all other playing audios
+                document.querySelectorAll('audio').forEach(otherAudio => {
+                    if (otherAudio !== audio && !otherAudio.paused) {
+                        otherAudio.pause();
+                        const otherButton = document.querySelector(`[data-audio="${otherAudio.id}"]`);
+                        if (otherButton) {
+                            otherButton.classList.remove('playing');
+                            otherButton.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M3 2v12l10-6z"/></svg>';
+                        }
+                    }
+                });
+
                 if (audio.paused) {
                     audio.play();
                     this.classList.add('playing');
@@ -977,15 +2066,74 @@
                 button.classList.remove('playing');
                 button.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M3 2v12l10-6z"/></svg>';
                 progressBar.style.width = '0%';
+                timeDisplay.textContent = `0:00 / ${formatTime(audio.duration)}`; // Reset time display
             });
             
             // Set progress on click
             progressContainer.addEventListener('click', setProgress);
             
-            // Initialize time display
+            // Initialize time display when metadata is loaded
             audio.addEventListener('loadedmetadata', function() {
                 timeDisplay.textContent = `0:00 / ${formatTime(audio.duration)}`;
             });
+        });
+
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true' || false;
+            mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
+            mobileMenu.classList.toggle('hidden');
+            // Toggle the menu icon (X vs Hamburger)
+            mobileMenuButton.querySelector('svg:first-child').classList.toggle('hidden');
+            mobileMenuButton.querySelector('svg:last-child').classList.toggle('hidden');
+        });
+
+        // Pagination Logic
+        const hadithPages = document.querySelectorAll('.hadith-page');
+        const prevPageBtn = document.getElementById('prevPageBtn');
+        const nextPageBtn = document.getElementById('nextPageBtn');
+        const pageInfo = document.getElementById('pageInfo');
+        let currentPage = 1;
+        const totalPages = hadithPages.length;
+
+        function showPage(pageNumber) {
+            hadithPages.forEach((page, index) => {
+                if (index + 1 === pageNumber) {
+                    page.classList.add('active');
+                } else {
+                    page.classList.remove('active');
+                }
+            });
+            currentPage = pageNumber;
+            updatePaginationControls();
+            // Scroll to top of the Hadith section when changing page
+            document.querySelector('.max-w-4xl.mx-auto.px-4.sm\\:px-6.lg\\:px-8').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function updatePaginationControls() {
+            pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
+            prevPageBtn.disabled = currentPage === 1;
+            nextPageBtn.disabled = currentPage === totalPages;
+        }
+
+        prevPageBtn.addEventListener('click', () => {
+            if (currentPage > 1) {
+                showPage(currentPage - 1);
+            }
+        });
+
+        nextPageBtn.addEventListener('click', () => {
+            if (currentPage < totalPages) {
+                showPage(currentPage + 1);
+            }
+        });
+
+        // Initialize pagination on load
+        document.addEventListener('DOMContentLoaded', () => {
+            showPage(1); // Show the first page by default
         });
     </script>
 </body>
