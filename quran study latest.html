@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quran Studies - KitabyHadith</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #0d9488;
+            --secondary: #00544d;
+            --accent: #f59e0b;
+            --light: #f0fdfa;
+        }
+        
+        body {
+            font-family: 'Amiri', serif;
+            background-color: #2d3748; /* Dark gray background matching index.html */
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        .islamic-pattern {
+            background: url('https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/60a75690-0f70-4596-9f51-099b40022a4a.png') center repeat;
+            background-size: 300px;
+            background-color: var(--secondary);
+            background-blend-mode: overlay;
+            opacity: 0.2;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+        }
+        
+        .calligraphy-title {
+            font-family: 'Noto Naskh Arabic', serif;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #fff;
+        }
+        
+        .arabic-font {
+            font-family: 'Noto Naskh Arabic', serif;
+            font-size: 1.4rem;
+            line-height: 2.3;
+            color: #d1d5db;
+        }
+        
+        /* --- Weather Effects CSS (From index.html) --- */
+        #weather-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+            overflow: hidden;
+        }
+        
+        /* Rain effect */
+        .rain {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+        
+        .drop {
+            position: absolute;
+            width: 2px;
+            height: 15px;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.2));
+            border-radius: 0 0 5px 5px;
+            animation: rain-fall linear infinite;
+        }
+        
+        .splash {
+            position: absolute;
+            width: 15px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: rain-splash 0.4s ease-out infinite;
+        }
+        
+        @keyframes rain-fall {
+            0% {
+                transform: translateY(-100px);
+            }
+            100% {
+                transform: translateY(calc(100vh + 100px));
+            }
+        }
+        
+        @keyframes rain-splash {
+            0% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+            80% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(20px) scale(0);
+            }
+        }
+        
+        /* Lightning effect */
+        .lightning {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            opacity: 0;
+            z-index: 11;
+        }
+        
+        .lightning-flash {
+            animation: lightning 0.5s ease-out;
+        }
+        
+        @keyframes lightning {
+            0% { opacity: 0; }
+            10% { opacity: 0.6; }
+            15% { opacity: 0.3; }
+            20% { opacity: 0.8; }
+            25% { opacity: 0.4; }
+            30% { opacity: 0.7; }
+            35% { opacity: 0; }
+            100% { opacity: 0; }
+        }
+        
+        /* Cloud effect */
+        .cloud {
+            position: absolute;
+            background: rgba(100, 100, 100, 0.3);
+            border-radius: 50%;
+            filter: blur(15px);
+            animation: cloud-move linear infinite;
+        }
+        
+        @keyframes cloud-move {
+            from { transform: translateX(-20%); }
+            to { transform: translateX(120%); }
+        }
+        
+        /* Wind/Air effects */
+        .wind {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .wind-particle {
+            position: absolute;
+            background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0));
+            border-radius: 2px;
+            filter: blur(0.5px);
+            animation: wind-move linear infinite;
+        }
+        
+        @keyframes wind-move {
+            0% {
+                transform: translateX(-100px) translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.5;
+            }
+            90% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateX(calc(100vw + 100px)) translateY(20px) rotate(10deg);
+                opacity: 0;
+            }
+        }
+        
+        .leaf {
+            position: absolute;
+            background: rgba(174, 214, 174, 0.7);
+            border-radius: 0 50% 50% 50%;
+            transform: rotate(45deg);
+            animation: leaf-tumble linear infinite;
+        }
+        
+        @keyframes leaf-tumble {
+            0% {
+                transform: translateX(-50px) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateX(calc(100vw + 50px)) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Dust effect */
+        .dust {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+        
+        .dust-particle {
+            position: absolute;
+            background: rgba(245, 245, 220, 0.5);
+            border-radius: 50%;
+            filter: blur(1px);
+            animation: dust-swirl linear infinite;
+        }
+        
+        @keyframes dust-swirl {
+            0% {
+                transform: translate(0, 0) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.3;
+            }
+            50% {
+                transform: translate(10px, -10px) scale(1);
+                opacity: 0.5;
+            }
+            100% {
+                transform: translate(20px, -20px) scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* Waves effect */
+        #waves-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            pointer-events: none;
+            z-index: 9;
+            overflow: hidden;
+        }
+
+        .wave {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            filter: blur(5px);
+            animation: wave-move linear infinite, wave-float ease-in-out infinite;
+        }
+
+        @keyframes wave-move {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        @keyframes wave-float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        /* Weather controls */
+        .weather-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 100;
+        }
+        
+        .weather-btn {
+            background: rgba(13, 148, 136, 0.8);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .weather-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .weather-btn.thunder {
+            background: rgba(13, 148, 136, 0.8);
+        }
+        
+        .weather-btn.thunder.muted {
+            background: rgba(156, 163, 175, 0.8);
+        }
+        
+        .weather-btn.rain-intensity {
+            background: rgba(59, 130, 246, 0.8);
+        }
+
+        .weather-btn.wind-intensity {
+            background: rgba(139, 195, 74, 0.8);
+        }
+        
+        .weather-btn.wind.muted {
+            background: rgba(156, 163, 175, 0.8);
+        }
+        
+        .rain-intensity-menu {
+            position: absolute;
+            bottom: 60px;
+            right: 0;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            min-width: 150px;
+        }
+        
+        .rain-intensity-menu.active {
+            display: flex;
+        }
+        
+        .intensity-option {
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .intensity-option:hover {
+            background: rgba(59, 130, 246, 0.1);
+        }
+        
+        .intensity-option.active {
+            background: rgba(59, 130, 246, 0.2);
+            font-weight: bold;
+        }
+        
+        .cloud-btn {
+            background: rgba(107, 114, 128, 0.8);
+        }
+        
+        .cloud-btn.muted {
+            background: rgba(156, 163, 175, 0.8);
+        }
+        /* --- End Weather Effects CSS --- */
+
+        /* --- Star Effect CSS --- */
+        #stars-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -0.5;
+            overflow: hidden;
+        }
+
+        .star {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            animation: twinkle linear infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+        /* --- End Star Effect CSS --- */
+
+        /* Quran Studies Specific Styles */
+        .resource-card {
+            transition: all 0.3s ease;
+        }
+        
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .book-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(13, 148, 136, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .content-area {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            border: 1px solid rgba(13, 148, 136, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            backdrop-filter: blur(10px);
+        }
+        
+        .quran-verse {
+            background: linear-gradient(to right, rgba(13, 148, 136, 0.1), rgba(245, 158, 11, 0.1));
+            border-right: 4px solid var(--primary);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- --- Weather Effects HTML (From index.html) --- -->
+    <div id="weather-container">
+        <div class="lightning" id="lightning"></div>
+        <div class="rain" id="rain"></div>
+        <div id="clouds"></div>
+        <div class="wind" id="wind"></div>
+        <div class="dust" id="dust"></div>
+    </div>
+    
+    <!-- Waves Container -->
+    <div id="waves-container"></div>
+
+    <!-- Stars Container -->
+    <div id="stars-container"></div>
+
+    <!-- Weather Controls -->
+    <div class="weather-controls">
+        <div class="relative">
+            <button class="weather-btn rain-intensity" id="rainIntensityBtn" title="Adjust rain intensity">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+            </button>
+            <div class="rain-intensity-menu" id="rainIntensityMenu">
+                <div class="intensity-option active" data-intensity="10">Light Rain</div>
+                <div class="intensity-option" data-intensity="30">Moderate Rain</div>
+                <div class="intensity-option" data-intensity="60">Heavy Rain</div>
+                <div class="intensity-option" data-intensity="100">Storm</div>
+            </div>
+        </div>
+        
+        <button class="weather-btn thunder" id="thunderBtn" title="Toggle thunder">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+        </button>
+        
+        <button class="weather-btn cloud-btn" id="cloudBtn" title="Toggle clouds">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 极速 24 极速" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 极速 003 15z" />
+            </svg>
+        </button>
+        
+        <div class="relative">
+            <button class="weather-btn wind-intensity" id="windIntensityBtn" title="Adjust wind intensity">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 12h16.5m-16.5 3H15m-14 3h16.5M1 6h16.5" />
+                </svg>
+            </button>
+            <div class="rain-intensity-menu" id="windIntensityMenu">
+                <div class="intensity-option active" data-intensity="0">No Wind</div>
+                <div class="intensity-option" data-intensity="10">Light Wind</div>
+                <div class="intensity-option" data-intensity="30">Moderate Wind</div>
+                <div class="intensity-option" data-intensity="60">Strong Wind</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Audio Elements for Weather Sounds -->
+    <audio id="thunderSound" src="Thunder Sound effect.mp3" preload="auto"></audio>
+    <audio id="rainSound" src="🎧 15 MINUTES of RELAXING RAIN SOUNDS for Sleeping Relaxing Sound.mp3" loop preload="auto"></audio>
+    <audio id="windSound" src="soundwind.mp3" loop preload="auto"></audio>
+    <!-- --- End Weather Effects HTML --- -->
+
+    <!-- Background layer -->
+    <div class="islamic-pattern"></div>
+    
+    <!-- Navigation -->
+    <nav class="bg-white bg-opacity-90 backdrop-blur-sm shadow-md fixed w-full top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center">
+                    <a href="index.html" class="flex-shrink-0 flex items-center">
+                        <img class="h-10 w-auto" src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/60a75690-0f70-4596-9f51-099b40022a4a.png" alt="KitabyHadith Logo">
+                        <span class="calligraphy-title ml-3 text-xl text-gray-800">KitabyHadith</span>
+                    </a>
+                </div>
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-button" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-teal-500" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <!-- Icon when menu is closed. -->
+                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                        <!-- Icon when menu is open. -->
+                        <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <!-- Desktop navigation -->
+                <div class="hidden md:flex items-center">
+                    <a href="index.html" class="text-teal-600 hover:text-teal-800 font-medium bg-white px-4 py-2 rounded-md transition-all duration-300 border border-teal-200">
+                        ← Back to Home
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile menu, show/hide based on menu state. -->
+        <div class="md:hidden hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 flex flex-col items-center">
+                <a href="index.html" class="block text-teal-600 hover:text-teal-800 font-medium bg-white px-4 py-2 rounded-md transition-all duration-300 border border-teal-200 w-full text-center">
+                    ← Back to Home
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 🎯 MAIN CONTENT -->
+    <section class="pt-28 pb-16 px-4 relative z-10">
+        <div class="max-w-7xl mx-auto">
+            <!-- HEADER -->
+            <div class="content-area p-8 md:p-12 mb-12 text-center">
+                <h1 class="calligraphy-title text-4xl md:text-5xl font-bold text-white mb-6">
+                    Quranic Studies
+                </h1>
+                <p class="text-gray-300 text-lg max-w-2xl mx-auto leading-relaxed">
+                    "And We have certainly made the Quran easy for remembrance, so is there any who will remember?"<br>
+                    (Quran 54:17)
+                </p>
+                <div class="mt-6 flex justify-center">
+                    <div class="w-24 h-1 bg-teal-500 rounded-full"></div>
+                </div>
+            </div>
+
+            <!-- 📖 QURAN STUDIES GRID -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Resource 1: Quran 16 Line -->
+                <div class="book-card group">
+                    <div class="h-64 bg-teal-900 rounded-t-2xl relative overflow-hidden flex items-center justify-center">
+                        <img src="images/1.jpg" alt="Quran 16 Line" class="w-full h-full object-cover opacity-70">
+                        <div class="absolute inset-0 bg-black/30"></div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="text-xl font-bold text-white">Quran 16 Line</h3>
+                            <span class="bg-teal-800 text-teal-100 text-xs font-medium px-2.5 py-0.5 rounded">Available</span>
+                        </div>
+                        <p class="text-gray-300 mb-4 text-sm">
+                            The complete Quran text in 16-line format, ideal for study and recitation. 
+                            Features clear Arabic script with proper diacritical marks.
+                        </p>
+                        <a href="quran-16-line.html" class="inline-flex items-center justify-center w-full bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-lg transition-all duration-300">
+                            Read 
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Resource 2: Tajweed Rules -->
+                <div class="book-card group">
+                    <div class="h-64 bg-amber-900 rounded-t-2xl relative overflow-hidden flex items-center justify-center">
+                        <img src="images/1.jpg" alt="Tajweed Rules" class="w-full h-full object-cover opacity-70">
+                        <div class="absolute inset-0 bg-black/30"></div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="text-xl font-bold text-white">Tajweed Rules</h3>
+                            <span class="bg-gray-700 text-gray-300 text-xs font-medium px-2.5 py-0.5 rounded">Coming Soon</span>
+                        </div>
+                        <p class="text-gray-300 mb-4 text-sm">
+                            Learn the proper rules of Quranic recitation. Master the pronunciation, 
+                            articulation points, and characteristics of Arabic letters.
+                        </p>
+                        <button class="inline-flex items-center justify-center w-full bg-gray-700 text-gray-400 font-medium py-2 px-4 rounded-lg cursor-not-allowed">
+                            Coming Soon
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Resource 3: Quran Tafsir -->
+                <div class="book-card group">
+                    <div class="h-64 bg-emerald-900 rounded-t-2xl relative overflow-hidden flex items-center justify-center">
+                        <img src="images/1.jpg" alt="Quran Tafsir" class="w-full h-full object-cover opacity-70">
+                        <div class="absolute inset-0 bg-black/30"></div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="text-xl font-bold text-white">Quran Tafsir</h3>
+                            <span class="bg-gray-700 text-gray-300 text-xs font-medium px-2.5 py-0.5 rounded">Coming Soon</span>
+                        </div>
+                        <p class="text-gray-300 mb-4 text-sm">
+                            Detailed exegesis and explanation of the Quranic verses. Understand the context, 
+                            meaning, and wisdom behind Allah's words.
+                        </p>
+                        <button class="inline-flex items-center justify-center w-full bg-gray-700 text-gray-400 font-medium py-2 px-4 rounded-lg cursor-not-allowed">
+                            Coming Soon
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Resource 4: Memorization Guide -->
+                <div class="book-card group">
+                    <div class="h-64 bg-blue-900 rounded-t-2xl relative overflow-hidden flex items-center justify-center">
+                        <img src="images/1.jpg" alt="Memorization Guide" class="w-full h-full object-cover opacity-70">
+                        <div class="absolute inset-0 bg-black/30"></div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="text-xl font-bold text-white">Memorization Guide</h3>
+                            <span class="bg-gray-700 text-gray-300 text-xs font-medium px-2.5 py-0.5 rounded">Coming Soon</span>
+                        </div>
+                        <p class="text-gray-300 mb-4 text-sm">
+                            Step-by-step guide to memorizing the Quran. Effective techniques, revision schedules, 
+                            and tips for long-term retention.
+                        </p>
+                        <button class="inline-flex items-center justify-center w-full bg-gray-700 text-gray-400 font-medium py-2 px-4 rounded-lg cursor-not-allowed">
+                            Coming Soon
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Resource 5: Quran Arabic -->
+                <div class="book-card group">
+                    <div class="h-64 bg-indigo-900 rounded-t-2xl relative overflow-hidden flex items-center justify-center">
+                        <img src="images/1.jpg" alt="Quran Arabic" class="w-full h-full object-cover opacity-70">
+                        <div class="absolute inset-0 bg-black/30"></div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="text-xl font-bold text-white">Quran Arabic</h3>
+                            <span class="bg-gray-700 text-gray-300 text-xs font-medium px-2.5 py-0.5 rounded">Coming Soon</span>
+                        </div>
+                        <p class="text-gray-300 mb-4 text-sm">
+                            Learn the language of the Quran with focused lessons on vocabulary, grammar, 
+                            and syntax used in the divine revelation.
+                        </p>
+                        <button class="inline-flex items-center justify-center w-full bg-gray-700 text-gray-400 font-medium py-2 px-4 rounded-lg cursor-not-allowed">
+                            Coming Soon
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Resource 6: Quran Recitation -->
+                <div class="book-card group">
+                    <div class="h-64 bg-purple-900 rounded-t-2xl relative overflow-hidden flex items-center justify-center">
+                        <img src="images/1.jpg" alt="Quran Recitation" class="w-full h-full object-cover opacity-70">
+                        <div class="absolute inset-0 bg-black/30"></div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="text-xl font-bold text-white">Quran Recitation</h3>
+                            <span class="bg-gray-700 text-gray-300 text-xs font-medium px-2.5 py-0.5 rounded">Coming Soon</span>
+                        </div>
+                        <p class="text-gray-300 mb-4 text-sm">
+                            Audio recordings of beautiful Quran recitations by renowned Qaris. 
+                            Listen and improve your own recitation style.
+                        </p>
+                        <button class="inline-flex items-center justify-center w-full bg-gray-700 text-gray-400 font-medium py-2 px-4 rounded-lg cursor-not-allowed">
+                            Coming Soon
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- INSPIRATIONAL QUOTE SECTION -->
+    <section class="py-16 px-4 relative z-10">
+        <div class="max-w-4xl mx-auto content-area p-8 text-center">
+            <div class="arabic-font quran-verse mb-6">
+                <p>وَإِنَّكَ لَتُلَقَّى الْقُرْآنَ مِن لَّدُنْ حَكِيمٍ عَلِيمٍ</p>
+            </div>
+            <p class="text-gray-300 italic">"And indeed, [O Muhammad], you receive the Qur'an from one Wise and Knowing." (Quran 27:6)</p>
+        </div>
+    </section>
+
+    <script>
+        // --- Weather Effects Logic (From index.html) ---
+        const weatherContainer = document.getElementById('weather-container');
+        const rainContainer = document.getElementById('rain');
+        const lightning = document.getElementById('lightning');
+        const cloudsContainer = document.getElementById('clouds');
+        const windContainer = document.getElementById('wind');
+        const dustContainer = document.getElementById('dust');
+        const wavesContainer = document.getElementById('waves-container'); 
+        const starsContainer = document.getElementById('stars-container');
+
+        const rainIntensityBtn = document.getElementById('rainIntensityBtn');
+        const rainIntensityMenu = document.getElementById('rainIntensityMenu');
+        const thunderBtn = document.getElementById('thunderBtn');
+        const cloudBtn = document.getElementById('cloudBtn');
+        const windIntensityBtn = document.getElementById('windIntensityBtn'); 
+        const windIntensityMenu = document.getElementById('windIntensityMenu'); 
+        
+        // Get references to audio elements
+        const thunderSound = document.getElementById('thunderSound');
+        const rainSound = document.getElementById('rainSound');
+        const windSound = document.getElementById('windSound'); 
+        
+        let rainIntensity = 10; // Initial rain intensity (Light Rain)
+        let thunderActive = false;
+        let cloudActive = false;
+        let windIntensity = 0; // Initial wind intensity (No Wind)
+        let thunderInterval;
+
+        // Function to update rain sound volume based on intensity
+        function updateRainSoundVolume() {
+            if (rainSound) {
+                const minIntensity = 10;
+                const maxIntensity = 100;
+                const minVolume = 0.1;
+                const maxVolume = 0.8;
+
+                if (rainIntensity === 0) {
+                    rainSound.pause();
+                    rainSound.currentTime = 0;
+                } else {
+                    const volume = minVolume + (maxVolume - minVolume) * ((rainIntensity - minIntensity) / (maxIntensity - minIntensity));
+                    rainSound.volume = volume;
+
+                    if (rainSound.paused) {
+                        rainSound.play().catch(e => console.error("Rain sound play failed:", e));
+                    }
+                }
+            }
+        }
+
+        // Function to update wind sound volume based on intensity
+        function updateWindSoundVolume() {
+            if (windSound) {
+                const minIntensity = 10;
+                const maxIntensity = 60;
+                const minVolume = 0.2;
+                const maxVolume = 0.7;
+
+                if (windIntensity === 0) {
+                    windSound.pause();
+                    windSound.currentTime = 0;
+                } else {
+                    const volume = minVolume + (maxVolume - minVolume) * ((windIntensity - minIntensity) / (maxIntensity - minIntensity));
+                    windSound.volume = volume;
+
+                    if (windSound.paused) {
+                        windSound.play().catch(e => console.error("Wind sound play failed:", e));
+                    }
+                }
+            }
+        }
+        
+        // Create rain drops based on intensity
+        function createRain(intensity) {
+            rainContainer.innerHTML = '';
+            
+            if (intensity > 0) {
+                for (let i = 0; i < intensity; i++) {
+                    const drop = document.createElement('div');
+                    drop.className = 'drop';
+                    drop.style.left = `${Math.random() * 100}%`;
+                    drop.style.animationDuration = `${0.5 + Math.random() * 0.5}s`;
+                    drop.style.animationDelay = `${Math.random() * 2}s`;
+                    rainContainer.appendChild(drop);
+                    
+                    // Create splash effect
+                    const splash = document.createElement('div');
+                    splash.className = 'splash';
+                    splash.style.left = `${parseFloat(drop.style.left) - 0.5}%`;
+                    splash.style.bottom = '10%';
+                    splash.style.animationDuration = `${0.4 + Math.random() * 0.2}s`;
+                    splash.style.animationDelay = `${parseFloat(drop.style.animationDelay) + 0.6}s`;
+                    rainContainer.appendChild(splash);
+                }
+            }
+            updateRainSoundVolume();
+        }
+        
+        // Create clouds
+        function createClouds() {
+            cloudsContainer.innerHTML = '';
+            
+            for (let i = 0; i < 5; i++) {
+                const cloud = document.createElement('div');
+                cloud.className = 'cloud';
+                cloud.style.width = `${100 + Math.random() * 200}px`;
+                cloud.style.height = `${60 + Math.random() * 80}px`;
+                cloud.style.top = `${Math.random() * 30}%`;
+                cloud.style.left = `${Math.random() * 20 - 20}%`;
+                cloud.style.opacity = `${0.2 + Math.random() * 0.2}`;
+                cloud.style.animationDuration = `${30 + Math.random() * 30}s`;
+                cloud.style.animationDelay = `${Math.random() * 20}s`;
+                cloudsContainer.appendChild(cloud);
+            }
+        }
+
+        // Create wind particles
+        function createWindParticles(intensity) {
+            windContainer.innerHTML = '';
+            const numParticles = intensity * 3;
+            const numLeaves = intensity * 1.5;
+            
+            for (let i = 0; i < numParticles; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'wind-particle';
+                particle.style.width = `${30 + Math.random() * 50 * (intensity / 60)}px`;
+                particle.style.height = `${1 + Math.random() * 2}px`;
+                particle.style.top = `${Math.random() * 100}%`;
+                particle.style.left = `${Math.random() * 20 - 20}%`;
+                particle.style.animationDuration = `${3 - (intensity / 30) + Math.random() * 3}s`;
+                particle.style.animationDelay = `${Math.random() * 3}s`;
+                windContainer.appendChild(particle);
+            }
+            
+            for (let i = 0; i < numLeaves; i++) {
+                const leaf = document.createElement('div');
+                leaf.className = 'leaf';
+                leaf.style.width = `${10 + Math.random() * 20 * (intensity / 60)}px`;
+                leaf.style.height = leaf.style.width;
+                leaf.style.top = `${Math.random() * 100}%`;
+                leaf.style.left = `${Math.random() * 20 - 20}%`;
+                leaf.style.animationDuration = `${8 - (intensity / 10) + Math.random() * 12}s`;
+                leaf.style.animationDelay = `${Math.random() * 8}s`;
+                windContainer.appendChild(leaf);
+            }
+        }
+        
+        // Create dust particles
+        function createDustParticles(intensity) {
+            dustContainer.innerHTML = '';
+            const numDustParticles = intensity * 2.5;
+            
+            for (let i = 0; i < numDustParticles; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'dust-particle';
+                particle.style.width = `${5 + Math.random() * 10 * (intensity / 60)}px`;
+                particle.style.height = particle.style.width;
+                particle.style.top = `${70 + Math.random() * 20}%`;
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.animationDuration = `${3 - (intensity / 30) + Math.random() * 4}s`;
+                particle.style.animationDelay = `${Math.random() * 3}s`;
+                dustContainer.appendChild(particle);
+            }
+        }
+
+        // Create waves
+        function createWaves(intensity) {
+            wavesContainer.innerHTML = '';
+            const numWaves = intensity / 5;
+            
+            for (let i = 0; i < numWaves; i++) {
+                const wave = document.createElement('div');
+                wave.className = 'wave';
+                wave.style.width = `${50 + Math.random() * 100 * (intensity / 60)}px`;
+                wave.style.height = `${20 + Math.random() * 40 * (intensity / 60)}px`;
+                wave.style.bottom = `${Math.random() * 20}px`;
+                wave.style.left = `${Math.random() * 100}%`;
+                wave.style.opacity = `${0.2 + Math.random() * 0.3 * (intensity / 60)}`;
+                wave.style.animationDuration = `${10 - (intensity / 10) + Math.random() * 10}s`;
+                wave.style.animationDelay = `${Math.random() * 5}s`;
+                wavesContainer.appendChild(wave);
+            }
+        }
+        
+        // Create stars
+        function createStars() {
+            starsContainer.innerHTML = '';
+            const numberOfStars = 100;
+            for (let i = 0; i < numberOfStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                const size = Math.random() * 3 + 1;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                star.style.animationDelay = `${Math.random() * 5}s`;
+                starsContainer.appendChild(star);
+            }
+        }
+        
+        // Toggle thunder
+        function toggleThunder() {
+            thunderActive = !thunderActive;
+            
+            if (thunderActive) {
+                thunderBtn.classList.remove('muted');
+                flashThunder();
+                thunderInterval = setInterval(flashThunder, 8000 + Math.random() * 7000);
+            } else {
+                thunderBtn.classList.add('muted');
+                clearInterval(thunderInterval);
+                lightning.classList.remove('lightning-flash');
+                if (thunderSound && !thunderSound.paused) {
+                    thunderSound.pause();
+                    thunderSound.currentTime = 0;
+                }
+            }
+        }
+        
+        // Flash thunder
+        function flashThunder() {
+            lightning.classList.remove('lightning-flash');
+            setTimeout(() => {
+                lightning.classList.add('lightning-flash');
+                if (thunderSound) {
+                    thunderSound.currentTime = 0;
+                    thunderSound.play().catch(e => console.error("Thunder sound play failed:", e));
+                }
+            }, 100);
+        }
+        
+        // Toggle clouds
+        function toggleClouds() {
+            cloudActive = !cloudActive;
+            
+            if (cloudActive) {
+                cloudBtn.classList.remove('muted');
+                createClouds();
+            } else {
+                cloudBtn.classList.add('muted');
+                cloudsContainer.innerHTML = '';
+            }
+        }
+
+        // Mobile Menu Toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuIconClosed = mobileMenuButton.querySelector('.block');
+            const menuIconOpen = mobileMenuButton.querySelector('.hidden');
+
+            mobileMenuButton.addEventListener('click', function() {
+                mobileMenu.classList.toggle('hidden');
+                menuIconClosed.classList.toggle('hidden');
+                menuIconOpen.classList.toggle('hidden');
+                this.setAttribute('aria-expanded', mobileMenu.classList.contains('hidden') ? 'false' : 'true');
+            });
+
+            // Initialize weather effects
+            createRain(rainIntensity);
+            createStars();
+            createWindParticles(windIntensity);
+            createDustParticles(windIntensity);
+            createWaves(windIntensity);
+            updateRainSoundVolume();
+            updateWindSoundVolume();
+
+            // Event listeners for rain intensity menu
+            rainIntensityBtn.addEventListener('click', function() {
+                rainIntensityMenu.classList.toggle('active');
+                windIntensityMenu.classList.remove('active');
+            });
+            
+            // Add "No Rain" option dynamically
+            const noRainOption = document.createElement('div');
+            noRainOption.className = 'intensity-option';
+            noRainOption.setAttribute('data-intensity', '0');
+            noRainOption.textContent = 'No Rain';
+            rainIntensityMenu.appendChild(noRainOption);
+
+            // Re-select all intensity options including the new one for event listeners
+            document.querySelectorAll('#rainIntensityMenu .intensity-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('#rainIntensityMenu .intensity-option').forEach(opt => {
+                        opt.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    rainIntensity = parseInt(this.getAttribute('data-intensity'));
+                    createRain(rainIntensity);
+                    rainIntensityMenu.classList.remove('active');
+                });
+            });
+            
+            thunderBtn.addEventListener('click', toggleThunder);
+            cloudBtn.addEventListener('click', toggleClouds);
+
+            // Event listeners for wind intensity menu
+            windIntensityBtn.addEventListener('click', function() {
+                windIntensityMenu.classList.toggle('active');
+                rainIntensityMenu.classList.remove('active');
+            });
+
+            document.querySelectorAll('#windIntensityMenu .intensity-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('#windIntensityMenu .intensity-option').forEach(opt => {
+                        opt.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    windIntensity = parseInt(this.getAttribute('data-intensity'));
+                    createWindParticles(windIntensity);
+                    createDustParticles(windIntensity);
+                    createWaves(windIntensity);
+                    updateWindSoundVolume();
+                    windIntensityMenu.classList.remove('active');
+                });
+            });
+            
+            // Close intensity menus when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!rainIntensityBtn.contains(event.target) && !rainIntensityMenu.contains(event.target)) {
+                    rainIntensityMenu.classList.remove('active');
+                }
+                if (!windIntensityBtn.contains(event.target) && !windIntensityMenu.contains(event.target)) {
+                    windIntensityMenu.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

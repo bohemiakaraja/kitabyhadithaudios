@@ -1,9 +1,9 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KitabyHadith</title>
+    <title>Sahih al-Bukhari - Chapters - KitabyHadith</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap');
@@ -17,25 +17,14 @@
         
         body {
             font-family: 'Amiri', serif;
-            background-color: #2d3748; /* Dark gray background matching footer */
+            background-color: #2d3748; /* Dark gray background matching footer from index.html */
             min-height: 100vh;
             overflow-x: hidden;
             position: relative;
+            color: #e5e7eb; /* Light text for dark background */
         }
         
-        .islamic-pattern {
-            background: url('https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/60a75690-0f70-4596-9f51-099b40022a4a.png') center repeat;
-            background-size: 300px;
-            background-color: var(--secondary); /* Adjusted to blend with dark background */
-            background-blend-mode: overlay;
-            opacity: 0.2; /* Increased opacity slightly */
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: -1;
-        }
+        /* Removed .islamic-pattern as per request */
         
         .calligraphy-title {
             font-family: 'Noto Naskh Arabic', serif;
@@ -51,37 +40,7 @@
             color: #d1d5db; /* Light gray for readability */
         }
         
-        .resource-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-        }
-        
-        .teacher-card:hover .teacher-img {
-            transform: scale(1.05);
-        }
-
-        /* Smooth scrolling for navigation */
-        html {
-            scroll-behavior: smooth;
-        }
-
-        /* Search results styling */
-        .search-highlight {
-            background-color: rgba(245, 158, 11, 0.2);
-            border-bottom: 2px solid var(--accent);
-        }
-
-        .no-results {
-            display: none;
-            text-align: center;
-            padding: 2rem;
-            background-color: #4b5563; /* Darker background for no results */
-            border-radius: 0.5rem;
-            margin-top: 2rem;
-            color: #d1d5db;
-        }
-
-        /* --- Weather Effects CSS --- */
+        /* --- Weather Effects CSS (Copied from index.html) --- */
         #weather-container {
             position: fixed;
             top: 0;
@@ -196,10 +155,9 @@
         
         .wind-particle {
             position: absolute;
-            /* Changed from circular to linear/streak */
             background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0));
-            border-radius: 2px; /* Slightly rounded ends for streaks */
-            filter: blur(0.5px); /* Less blur for sharper streaks */
+            border-radius: 2px;
+            filter: blur(0.5px);
             animation: wind-move linear infinite;
         }
         
@@ -380,6 +338,7 @@
             border-radius: 6px;
             cursor: pointer;
             transition: background 0.2s;
+            color: #333; /* Dark text for light menu background */
         }
         
         .intensity-option:hover {
@@ -400,7 +359,7 @@
         }
         /* --- End Weather Effects CSS --- */
 
-        /* --- Star Effect CSS --- */
+        /* --- Star Effect CSS (Copied from index.html) --- */
         #stars-container {
             position: fixed;
             top: 0;
@@ -424,10 +383,42 @@
             50% { opacity: 1; transform: scale(1); }
         }
         /* --- End Star Effect CSS --- */
+
+        /* General content styling for dark theme */
+        .bg-gray-800 {
+            background-color: #2d3748; /* Darker gray for content boxes */
+        }
+        .bg-gray-900 {
+            background-color: #1a202c; /* Even darker for nav/footer */
+        }
+        .text-gray-300 {
+            color: #d1d5db;
+        }
+        .text-gray-400 {
+            color: #9ca3af;
+        }
+        .text-white {
+            color: #ffffff;
+        }
+        .border-gray-700 {
+            border-color: #4a5568;
+        }
+        .border-gray-800 {
+            border-color: #2d3748;
+        }
+        .hover\:text-teal-300:hover {
+            color: #5eead4;
+        }
+        .hover\:text-teal-400:hover {
+            color: #2dd4bf;
+        }
+        .text-teal-400 {
+            color: #2dd4bf;
+        }
     </style>
 </head>
 <body>
-    <!-- --- Weather Effects HTML --- -->
+    <!-- --- Weather Effects HTML (Copied from index.html) --- -->
     <div id="weather-container">
         <div class="lightning" id="lightning"></div>
         <div class="rain" id="rain"></div>
@@ -487,343 +478,114 @@
     </div>
     
     <!-- Audio Elements for Weather Sounds -->
-    <!-- IMPORTANT: Replace 'path/to/your/thunder_sound.mp3' and 'path/to/your/rain_sound.mp3' with your actual file paths -->
+    <!-- IMPORTANT: Replace src with actual paths to your audio files -->
     <audio id="thunderSound" src="Thunder Sound effect.mp3" preload="auto"></audio>
     <audio id="rainSound" src="🎧 15 MINUTES of RELAXING RAIN SOUNDS for Sleeping Relaxing Sound.mp3" loop preload="auto"></audio>
     <audio id="windSound" src="soundwind.mp3" loop preload="auto"></audio>
     <!-- --- End Weather Effects HTML --- -->
 
-    <!-- Background layer -->
-    <div class="islamic-pattern"></div>
-    
     <!-- Navigation -->
-    <nav class="bg-white bg-opacity-90 backdrop-blur-sm shadow-md sticky top-0 z-50">
+    <nav class="bg-gray-900 bg-opacity-90 backdrop-blur-sm shadow-md sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
+            <div class="flex justify-between h-16 items-center">
                 <div class="flex items-center">
-                    <!-- Logo and site name -->
                     <div class="flex-shrink-0 flex items-center">
-                        <!-- Added Logo Image Here -->
-                        <img class="h-10 w-auto" src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/60a75690-0f70-4596-9f51-099b40022a4a.png" alt="KitabyHadith Logo">
-                        <span class="calligraphy-title ml-3 text-2xl text-gray-800">KitabyHadith</span>
-                    </div>
-                    
-                    <!-- Navigation links - Desktop -->
-                    <div class="hidden md:ml-6 md:space-x-8">
-                        <a href="#" class="inline-flex items-center px-1 pt-1 border-b-2 border-teal-500 text-sm font-medium text-gray-900">Home</a>
-                        <a href="#Books" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent hover:border-gray-300 text-sm font-medium text-gray-500 hover:text-gray-700">Books</a>
-                        <a href="#about" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent hover:border-gray-300 text-sm font-medium text-gray-500 hover:text-gray-700">About</a>
+                        <!-- Placeholder for logo, replace with actual image if available -->
+                        <div class="bg-gray-200 border-2 border-dashed rounded-xl w-10 h-10"></div>
+                        <a href="index.html" class="calligraphy-title ml-3 text-xl text-white">KitabyHadith</a>
                     </div>
                 </div>
-                
-                <!-- Search and Action -->
-                <div class="flex items-center">
-                    <div class="flex-shrink-0 w-full md:w-auto"> <!-- Added w-full md:w-auto for responsiveness -->
-                        <div class="relative flex items-center">
-                            <input type="text" id="search-input" placeholder="Search knowledge..." class="pl-3 pr-10 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent w-full"> <!-- Added w-full for responsiveness -->
-                            <button id="search-button" class="absolute right-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                    <button class="ml-4 bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300 hidden md:block"> <!-- Hidden on mobile, shown on desktop -->
-                        Sign In
-                    </button>
-                </div>
-
                 <!-- Mobile menu button -->
-                <div class="-mr-2 flex items-center md:hidden">
-                    <button type="button" id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-teal-500" aria-controls="mobile-menu" aria-expanded="false">
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-button" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-300 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-teal-500" aria-controls="mobile-menu" aria-expanded="false">
                         <span class="sr-only">Open main menu</span>
-                        <!-- Icon when menu is closed. -->
                         <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
-                        <!-- Icon when menu is open. -->
                         <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </button>
                 </div>
+                <!-- Desktop navigation -->
+                <div class="hidden md:ml-6 md:flex md:space-x-8">
+                    <a href="index.html" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent hover:border-gray-300 text-sm font-medium text-gray-300 hover:text-white">Home</a>
+                    <a href="index.html#books" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent hover:border-gray-300 text-sm font-medium text-gray-300 hover:text-white">Books</a>
+                    <a href="index.html#about" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent hover:border-gray-300 text-sm font-medium text-gray-300 hover:text-white">About</a>
+                </div>
             </div>
         </div>
 
         <!-- Mobile menu, show/hide based on menu state. -->
-        <div class="md:hidden" id="mobile-menu">
-            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <a href="#" class="bg-teal-50 block px-3 py-2 rounded-md text-base font-medium text-teal-700">Home</a>
-                <a href="#Books" class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium">Books</a>
-                <a href="#about" class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium">About</a>
-                <button class="w-full text-left bg-teal-600 hover:bg-teal-700 text-white px-3 py-2 rounded-md text-base font-medium transition duration-300 mt-2">
-                    Sign In
-                </button>
+        <div class="md:hidden hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 flex flex-col items-center">
+                <a href="index.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800 w-full text-center">Home</a>
+                <a href="index.html#books" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800 w-full text-center">Books</a>
+                <a href="index.html#about" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800 w-full text-center">About</a>
             </div>
         </div>
     </nav>
 
-    <!-- No results message -->
-    <div id="no-results" class="no-results max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-        <h3 class="text-xl font-semibold text-gray-300">No results found</h3>
-        <p class="text-gray-400 mt-2">Try different or more general keywords</p>
-    </div>
-
-    <!-- Hero Section -->
-    <header class="relative py-20 md:py-32 text-center">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="bg-white bg-opacity-10 rounded-xl p-8 md:p-12 max-w-3xl mx-auto shadow-xl">
-                <h1 class="calligraphy-title text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
-                    Seek Knowledge From the Cradle to the Grave
-                </h1>
-                <p class="arabic-font text-xl text-gray-300 mb-10 max-w-2xl mx-auto">
-                    وقال رسول الله صلى الله عليه وسلم: "طلب العلم فريضة على كل مسلم"
-                </p>
-            </div>
-        </div>
-    </header>
-<!-- About Section - ADDED THIS SECTION -->
-    <section id="about" class="py-20 bg-gray-700 content-area">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="calligraphy-title text-3xl md:text-4xl font-bold text-white mb-4">
-                    About KitabyHadith
-                </h2>
-                <p class="max-w-2xl mx-auto text-gray-300">
-                    Your trusted source for authentic Islamic knowledge
-                </p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                <div>
-                    <h3 class="text-2xl font-bold text-white mb-6">Our Mission</h3>
-                    <p class="text-gray-300 mb-6">
-                        KitabyHadith is dedicated to providing authentic Islamic knowledge through carefully curated collections of Hadith and Islamic literature. We strive to make learning accessible to everyone, regardless of their background or level of understanding.
-                    </p>
-                    <p class="text-gray-300 mb-6">
-                        Our platform brings together classical Islamic texts with modern educational approaches, creating a comprehensive resource for students of knowledge at all levels.
-                    </p>
-                    <div class="bg-gray-600 p-6 rounded-lg border-l-4 border-teal-500">
-                        <p class="text-gray-300 italic">
-                            "Whoever treads a path in search of knowledge, Allah will make easy for him the path to Paradise."
-                        </p>
-                        <p class="text-teal-400 mt-2">- Sahih Muslim</p>
+    <!-- Book Content - Table of Contents -->
+    <section class="py-12">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-gray-800 bg-opacity-70 backdrop-blur-lg rounded-xl shadow-lg p-8 border border-gray-700">
+                <div class="text-center mb-8">
+                    <h1 class="calligraphy-title text-3xl md:text-4xl font-bold text-white mb-2">
+                        Sahih al-Bukhari
+                    </h1>
+                    <p class="text-gray-300">Collection of authentic hadith by Imam Muhammad al-Bukhari</p>
+                </div>
+                
+                <!-- Table of Contents -->
+                <div class="mb-8 bg-gray-900 bg-opacity-50 p-6 rounded-lg border border-gray-700">
+                    <h2 class="text-xl font-bold mb-4 text-white">Chapters</h2>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                        <a href="sahih-bukhari-chapters/chapter-01-revelation.html" class="text-teal-400 hover:text-teal-300 transition-colors duration-200">1. Revelation</a>
+                        <a href="sahih-bukhari-chapters/chapter-02-faith.html" class="text-teal-400 hover:text-teal-300 transition-colors duration-200">2. Faith</a>
+                        <a href="sahih-bukhari-chapters/chapter-03-knowledge.html" class="text-teal-400 hover:text-teal-300 transition-colors duration-200">3. Knowledge</a>
+                        <a href="sahih-bukhari-chapters/chapter-04-ablutions.html" class="text-teal-400 hover:text-teal-300 transition-colors duration-200">4. Ablutions</a>
+                        <a href="sahih-bukhari-chapters/chapter-05-bathing.html" class="text-teal-400 hover:text-teal-300 transition-colors duration-200">5. Bathing</a>
+                        <a href="sahih-bukhari-chapters/chapter-06-menstrual-periods.html" class="text-teal-400 hover:text-teal-300 transition-colors duration-200">6. Menstrual Periods</a>
+                        <!-- Additional chapters would go here -->
                     </div>
                 </div>
-                <div class="bg-gray-600 rounded-xl p-8">
-                    <h3 class="text-2xl font-bold text-white mb-6">What We Offer</h3>
-                    <ul class="space-y-4">
-                        <li class="flex items-start">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-teal-400 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            <span class="text-gray-300">Authentic collections of Hadith from reliable sources</span>
-                        </li>
-                        <li class="flex items-start">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-teal-400 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            <span class="text-gray-300">Detailed explanations and commentaries from renowned scholars</span>
-                        </li>
-                        <li class="flex items-start">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-teal-400 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            <span class="text-gray-300">User-friendly interface designed for easy navigation and study</span>
-                        </li>
-                        <li class="flex items-start">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-teal-400 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            <span class="text-gray-300">Regular updates with new content and features</span>
-                        </li>
-                    </ul>
+                
+                <div class="flex flex-col sm:flex-row justify-between items-center mt-8 pt-4 border-t border-gray-700 space-y-4 sm:space-y-0">
+                    <a href="hadith-books.html" class="flex items-center text-teal-400 hover:text-teal-300 transition-colors duration-200 w-full sm:w-auto justify-center sm:justify-start">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                        </svg>
+                        Back to Books
+                    </a>
                 </div>
             </div>
         </div>
     </section>
-    <!-- Book Section - ADDED ID="BOOKS" HERE -->
-    <section id="Books" class="py-20 bg-gray-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="calligraphy-title text-3xl md:text-4xl font-bold text-white mb-4">
-                    Islamic Education
-                </h2>
-                <p class="max-w-2xl mx-auto text-gray-300">
-                    Structured Islamic curriculum for all knowledge seekers
-                </p>
-            </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="resources-container">
-                <!-- Quranic Studies - UPDATED WITH QURAN 16 LINE -->
-                <div class="resource-card bg-gray-700 rounded-xl shadow-lg overflow-hidden transition duration-300 hover:shadow-xl">
-                    <div class="h-48 bg-gray-600 flex items-center justify-center">
-                        <img src="images/1.jpg" alt="Open Quran book with decorative illumination patterns" class="w-full h-full object-cover">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-white mb-2">Quranic Studies</h3>
-                        <p class="text-gray-300 mb-4">
-                            Tajweed, Memorization, Tafsir, and Quran Arabic programs
-                        </p>
-                        
-                        <!-- List of Quranic Resources -->
-                        <div class="mb-4">
-                            <div class="flex justify-between items-center py-2 border-b border-gray-600">
-                                <span class="text-gray-300">Quran 16 Line</span>
-                                <a href="quran-16-line.html" class="text-teal-400 hover:text-teal-300 text-sm">Read</a>
-                            </div>
-                            <div class="flex justify-between items-center py-2 border-b border-gray-600">
-                                <span class="text-gray-300">Tajweed Rules</span>
-                                <a href="tajweed.html" class="text-teal-400 hover:text-teal-300 text-sm">Coming Soon</a>
-                            </div>
-                            <div class="flex justify-between items-center py-2 border-b border-gray-600">
-                                <span class="text-gray-300">Quran Tafsir</span>
-                                <a href="tafsir.html" class="text-teal-400 hover:text-teal-300 text-sm">Coming Soon</a>
-                            </div>
-                            <div class="flex justify-between items-center py-2">
-                                <span class="text-gray-300">Memorization Guide</span>
-                                <a href="hifz-guide.html" class="text-teal-400 hover:text-teal-300 text-sm">Coming Soon</a>
-                                </a>
-                            </div>
-                        </div>
-                        
-                        <div class="flex justify-between items-center">
-                            <span class="text-teal-400 font-medium">4 Resources</span>
-                            <a href="quran-studies.html" class="text-teal-400 hover:text-teal-300 font-medium flex items-center">
-                                View All
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Hadith Books -->
-                <div class="resource-card bg-gray-700 rounded-xl shadow-lg overflow-hidden transition duration-300 hover:shadow-xl">
-                    <div class="h-48 bg-gray-600 flex items-center justify-center">
-                        <img src="images/2.jpg" alt="Collection of Hadith books" class="w-full h-full object-cover">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-white mb-2">Hadith Books</h3>
-                        <p class="text-gray-300 mb-4">
-                            Explore authentic collections of Prophet Muhammad's (PBUH) sayings and teachings
-                        </p>
-                        
-                        <!-- List of Hadith Books -->
-                        <div class="mb-4">
-                            <div class="flex justify-between items-center py-2 border-b border-gray-600">
-                                <span class="text-gray-300">Sahih al-Bukhari</span>
-                                <a href="sahih-bukhari.html" class="text-teal-400 hover:text-teal-300 text-sm">Read</a>
-                            </div>
-                            <div class="flex justify-between items-center py-2 border-b border-gray-600">
-                                <span class="text-gray-300">Sahih Muslim</span>
-                                <a href="sahih-muslim.html" class="text-teal-400 hover:text-teal-300 text-sm">Read</a>
-                            </div>
-                            <div class="flex justify-between items-center py-2 border-b border-gray-600">
-                                <span class="text-gray-300">Sunan Abu Dawood</span>
-                                <a href="abudawood.html" class="text-teal-400 hover:text-teal-300 text-sm">Read</a>
-                            </div>
-                            <div class="flex justify-between items-center py-2">
-                                <span class="text-gray-300">Jami` at-Tirmidhi</span>
-                                <a href="tirmidhi.html" class="text-teal-400 hover:text-teal-300 text-sm">Read</a>
-                            </div>
-                        </div>
-                        
-                        <div class="flex justify-between items-center">
-                            <span class="text-teal-400 font-medium">4 Books</span>
-                            <a href="hadith-books.html" class="text-teal-400 hover:text-teal-300 font-medium flex items-center">
-                                View All
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 极速 24 极速" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Islamic Sciences -->
-                <div class="resource-card bg-gray-700 rounded-xl shadow-lg overflow-hidden transition duration-300 hover:shadow-xl">
-                    <div class="h-48 bg-gray-600 flex items-center justify-center">
-                        <img src="images/3.png" alt="Ancient Islamic manuscripts with geometric patterns" class="w-full h-full object-cover">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-white mb-2">Islamic Sciences</h3>
-                        <p class="text-gray-300 mb-4">
-                            Aqeedah, Fiqh, Seerah, Hadith and Islamic History
-                        </p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-teal-400 font-medium">Coming soon</span>
-                            <button class="text-teal-400 hover:text-teal-300 font-medium flex items-center">
-                                Explore
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-<section class="py-20 bg-gray-900 text-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="bg-gradient-to-r from-teal-700 to-teal-900 rounded-2xl p-12">
-                <div class="max-w-3xl mx-auto text-center">
-                    <h2 class="calligraphy-title text-3xl md:text-4xl font-bold mb-6">
-                        Begin Your Journey of Knowledge
-                    </h2>
-            
-                    
-                </div>
-            </div>
-        </div>
-    </section>
     <!-- Footer -->
-    <footer class="bg-gray-800 text-white pt-16 pb-12">
+    <footer class="bg-gray-900 text-gray-400 py-8 mt-12 border-t border-gray-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div class="col-span-1 md:col-span-1">
-                    <h2 class="calligraphy-title text-2xl font-bold mb-4">Kitab By Hadith</h2>
-                    <p class="text-gray-300 mb-4">
-                       Hadith is a  collection of traditions and sayings of the Prophet Muhammad (peace be upon him), which, with the Qur'an, constitutes the sacred texts of Islam
-                    </p>
-                    <div class="flex space-x-4">
-                        <a href="#" class="hover:text-teal-400">
-                            <span class="sr-only">Facebook</span>
-                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" />
-                            </svg>
-                        </a>
-                        <a href="https://youtube.com/@kitabyhadith?si=DbkqJae2xjrR3zJ_" class="hover:text-teal-400">
-                            <span class="sr-only">YouTube</span>
-                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
-                            </svg>
-                        </a>
-                    </div>
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <h3 class="text-xl font-bold text-white">KitabyHadith</h3>
+                    <p>Collection of Authentic Hadith</p>
                 </div>
-                <div class="col-span-1 md:col-span-1">
-                    <h3 class="text-xl font-bold mb-4">Contact Us</h3>
-                    <p class="text-gray-300 mb-2">Email: <a href="mailto:kitabyhadith@gmail.com" class="hover:text-teal-400">kitabyhadith@gmail</a></p>
+                <div class="flex space-x-4">
+                    <a href="#" class="hover:text-white transition-colors duration-200">About</a>
+                    <a href="#" class="hover:text-white transition-colors duration-200">Privacy Policy</a>
+                    <a href="#" class="hover:text-white transition-colors duration-200">Contact</a>
                 </div>
+            </div>
+            <div class="mt-8 text-center text-sm">
+                <p>© 2023 KitabyHadith. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // --- Existing Search and Mobile Menu Logic ---
-            const searchInput = document.getElementById('search-input');
-            const searchButton = document.getElementById('search-button');
-            const resourceCards = document.querySelectorAll('.resource-card');
-            const noResultsMessage = document.getElementById('no-results');
-            
-            // Mobile menu functionality
+            // --- Mobile Menu Logic (Copied from index.html) ---
             const mobileMenuButton = document.getElementById('mobile-menu-button');
             const mobileMenu = document.getElementById('mobile-menu');
 
@@ -848,121 +610,7 @@
                 }
             });
 
-            // Function to perform search
-            function performSearch() {
-                const searchTerm = searchInput.value.trim().toLowerCase();
-                let hasResults = false;
-                
-                // Remove all existing highlights before a new search
-                document.querySelectorAll('.search-highlight').forEach(span => {
-                    span.outerHTML = span.innerHTML; // Replace span with its content
-                });
-                // Reset background colors for resources and cards
-                document.querySelectorAll('.flex.justify-between.items-center').forEach(resource => {
-                    resource.style.backgroundColor = '';
-                });
-                resourceCards.forEach(card => {
-                    card.style.backgroundColor = '';
-                });
-
-
-                if (searchTerm === '') {
-                    // If search is empty, show all cards
-                    resourceCards.forEach(card => {
-                        card.style.display = 'block';
-                    });
-                    noResultsMessage.style.display = 'none';
-                    return;
-                }
-                
-                // Search through each resource card
-                resourceCards.forEach(card => {
-                    const cardText = card.textContent.toLowerCase();
-                    
-                    let cardHasMatch = cardText.includes(searchTerm);
-                    
-                    if (cardHasMatch) {
-                        card.style.display = 'block';
-                        hasResults = true;
-                        
-                        // Highlight matching text in the card
-                        highlightText(card, searchTerm);
-                        
-                        // Also check individual resources within the card
-                        let resourceMatchFound = false;
-                        const resources = card.querySelectorAll('.flex.justify-between.items-center');
-                        resources.forEach(resource => {
-                            const resourceText = resource.textContent.toLowerCase();
-                            if (resourceText.includes(searchTerm)) {
-                                resource.style.backgroundColor = 'rgba(245, 158, 11, 0.1)';
-                                resourceMatchFound = true;
-                            } else {
-                                resource.style.backgroundColor = '';
-                            }
-                        });
-                        
-                        // If no specific resource matched, highlight the entire card slightly
-                        if (!resourceMatchFound) {
-                            card.style.backgroundColor = 'rgba(245, 158, 11, 0.05)';
-                        } else {
-                            card.style.backgroundColor = '';
-                        }
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
-                
-                // Show no results message if no matches found
-                if (!hasResults) {
-                    noResultsMessage.style.display = 'block';
-                } else {
-                    noResultsMessage.style.display = 'none';
-                }
-            }
-            
-            // Function to highlight matching text
-            function highlightText(element, searchTerm) {
-                const searchRegex = new RegExp(searchTerm, 'gi');
-                
-                function replaceText(node) {
-                    if (node.nodeType === 3) { // Text node
-                        const text = node.nodeValue;
-                        if (searchRegex.test(text)) {
-                            const newElement = document.createElement('span');
-                            newElement.innerHTML = text.replace(searchRegex, match => `<span class="search-highlight">${match}</span>`);
-                            node.parentNode.replaceChild(newElement, node);
-                        }
-                    } else if (node.nodeType === 1 && node.nodeName !== 'SCRIPT' && node.nodeName !== 'STYLE' && !node.classList.contains('search-highlight')) { // Element node, avoid re-highlighting
-                        Array.from(node.childNodes).forEach(replaceText);
-                    }
-                }
-                
-                // Only apply highlighting to specific areas to avoid breaking HTML structure
-                const areasToSearch = element.querySelectorAll('h3, p, span.text-gray-700');
-                areasToSearch.forEach(area => {
-                    Array.from(area.childNodes).forEach(replaceText);
-                });
-            }
-            
-            // Event listeners
-            searchButton.addEventListener('click', performSearch);
-            searchInput.addEventListener('keyup', function(event) {
-                if (event.key === 'Enter') {
-                    performSearch();
-                } else if (this.value.trim() === '') { // If input is cleared by backspace/delete
-                    performSearch(); // Re-run search to show all cards
-                }
-            });
-            
-            // Clear search and show all results when clicking on the search input if it has text
-            searchInput.addEventListener('click', function() {
-                if (this.value !== '') {
-                    this.value = '';
-                    performSearch(); // Clear search and show all
-                }
-            });
-
-            // --- Weather Effects Logic (Integrated) ---
+            // --- Weather Effects Logic (Copied from index.html) ---
             const weatherContainer = document.getElementById('weather-container');
             const rainContainer = document.getElementById('rain');
             const lightning = document.getElementById('lightning');
@@ -970,7 +618,7 @@
             const windContainer = document.getElementById('wind');
             const dustContainer = document.getElementById('dust');
             const wavesContainer = document.getElementById('waves-container'); 
-            const starsContainer = document.getElementById('stars-container'); // Get stars container
+            const starsContainer = document.getElementById('stars-container'); 
 
             const rainIntensityBtn = document.getElementById('rainIntensityBtn');
             const rainIntensityMenu = document.getElementById('rainIntensityMenu');
